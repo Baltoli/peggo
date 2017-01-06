@@ -6,7 +6,15 @@
 
 peg_rule_t *peg_rule_init(char *sym, peg_expr_t *expr) {
   peg_rule_t *rule = malloc(sizeof(peg_rule_t));
+  if(!rule) {
+    exit(EXIT_FAILURE);
+  }
+
   rule->symbol = malloc(strlen(sym) + 1);
+  if(!rule->symbol) {
+    exit(EXIT_FAILURE);
+  }
+
   strcpy(rule->symbol, sym);
   rule->production = expr;
   return rule;

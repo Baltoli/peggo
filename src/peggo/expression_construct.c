@@ -5,6 +5,10 @@
 
 peg_expr_t *peg_init(peg_expr_node_t type) {
   peg_expr_t *node = malloc(sizeof(*node));
+  if(!node) {
+    exit(EXIT_FAILURE);
+  }
+
   node->type = type;
   node->data = NULL;
   node->left = NULL;
@@ -35,7 +39,11 @@ void peg_init_data(peg_expr_t *node, const char *s) {
     free(node->data);
   }
 
-  node->data = malloc((sizeof(char) * strlen(s)) + 1);
+  node->data = malloc(strlen(s) + 1);
+  if(!node->data) {
+    exit(EXIT_FAILURE);
+  }
+
   strcpy(node->data, s);
 }
 
