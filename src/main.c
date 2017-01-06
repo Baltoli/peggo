@@ -1,4 +1,4 @@
-#include "peggo/rule.h"
+#include "peggo/grammar.h"
 
 int main(int argc, char **argv) {
   peg_expr_t *g = 
@@ -10,8 +10,7 @@ int main(int argc, char **argv) {
       peg_terminal("hello")
     );
   peg_rule_t *rule = peg_rule_init("sym", g);
-  peg_print_rule(rule);
-
-  peg_rule_free(rule);
+  peg_grammar_t *gram = peg_grammar_init(peg_non_terminal("sym"), rule, 1);
+  peg_print_grammar(gram);
   return 0;
 }
