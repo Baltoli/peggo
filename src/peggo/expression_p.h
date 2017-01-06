@@ -1,7 +1,7 @@
 #ifndef EXPRESSION_P_H
 #define EXPRESSION_P_H
 
-typedef enum peg_expr_node_en {
+enum peg_expr_node_en {
   Node_Terminal,
   Node_Non_Terminal,
   Node_Empty,
@@ -12,10 +12,10 @@ typedef enum peg_expr_node_en {
   Node_Optional,
   Node_And,
   Node_Or
-} peg_expr_node_t;
+};
 
 typedef struct peg_expr_st {
-  peg_expr_node_t type;
+  enum peg_expr_node_en type;
 } peg_expr_t;
 
 peg_expr_t node_init();
