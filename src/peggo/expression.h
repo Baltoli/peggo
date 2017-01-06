@@ -30,7 +30,7 @@ typedef struct peg_expr_st {
 /**
  * Constructors and memory management
  */
-void peg_free(peg_expr_t *node);
+void peg_expr_free(peg_expr_t *node);
 peg_expr_t *peg_empty();
 peg_expr_t *peg_terminal(const char *t);
 peg_expr_t *peg_non_terminal(const char *nt);
