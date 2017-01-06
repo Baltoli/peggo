@@ -25,7 +25,7 @@ void peg_rule_free(peg_rule_t *rule) {
     return;
   }
 
-  peg_free(rule->production);
+  peg_expr_free(rule->production);
   free(rule->symbol);
   free(rule);
 }
