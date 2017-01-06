@@ -1,6 +1,9 @@
 #ifndef EXPRESSION_H
 #define EXPRESSION_H
 
+/**
+ * Data type definitions
+ */
 typedef enum peg_expr_node_en {
   Node_Invalid = 0,
   Node_Empty,
@@ -22,6 +25,9 @@ typedef struct peg_expr_st {
   struct peg_expr_st *right;
 } peg_expr_t;
 
+/**
+ * Constructors and memory management
+ */
 void peg_free(peg_expr_t *node);
 peg_expr_t *peg_empty();
 peg_expr_t *peg_terminal(const char *t);
@@ -33,5 +39,10 @@ peg_expr_t *peg_choice(peg_expr_t *left, peg_expr_t *right);
 peg_expr_t *peg_optional(peg_expr_t *expr);
 peg_expr_t *peg_and(peg_expr_t *left, peg_expr_t *right);
 peg_expr_t *peg_not(peg_expr_t *expr);
+
+/**
+ * Printing expression trees
+ */
+const char *peg_expr_name(peg_expr_t *node);
 
 #endif
