@@ -1,5 +1,7 @@
 # peggo: A PEG Parser Generator
 
+[![Build Status](https://travis-ci.org/Baltoli/peggo.svg?branch=master)](https://travis-ci.org/Baltoli/peggo)
+
 This project aims to implement a PEG parser generator. It is a future project
 for me, and as such this repository is mostly ideas for now until I have some
 more time to spend on it.
