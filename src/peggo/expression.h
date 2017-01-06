@@ -26,9 +26,12 @@ void peg_free(peg_expr_t *node);
 peg_expr_t *peg_empty();
 peg_expr_t *peg_terminal(const char *t);
 peg_expr_t *peg_non_terminal(const char *nt);
-peg_expr_t *peg_sequence(peg_expr_t *expr);
+peg_expr_t *peg_sequence(peg_expr_t *left, peg_expr_t *right);
 peg_expr_t *peg_zero_or_more(peg_expr_t *expr);
 peg_expr_t *peg_one_or_more(peg_expr_t *expr);
 peg_expr_t *peg_choice(peg_expr_t *left, peg_expr_t *right);
+peg_expr_t *peg_optional(peg_expr_t *expr);
+peg_expr_t *peg_and(peg_expr_t *left, peg_expr_t *right);
+peg_expr_t *peg_not(peg_expr_t *expr);
 
 #endif

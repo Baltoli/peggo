@@ -71,9 +71,10 @@ peg_expr_t *peg_non_terminal(const char *nt) {
   return node;
 }
 
-peg_expr_t *peg_sequence(peg_expr_t *expr) {
+peg_expr_t *peg_sequence(peg_expr_t *left, peg_expr_t *right) {
   peg_expr_t *node = peg_init(Node_Sequence);
-  peg_init_left(node, expr);
+  peg_init_left(node, left);
+  peg_init_right(node, right);
   return node;
 }
 
@@ -93,5 +94,24 @@ peg_expr_t *peg_choice(peg_expr_t *left, peg_expr_t *right) {
   peg_expr_t *node = peg_init(Node_Choice);
   peg_init_left(node, left);
   peg_init_right(node, right);
+  return node;
+}
+
+peg_expr_t *peg_optional(peg_expr_t *expr) {
+  peg_expr_t *node = peg_init(Node_Optional);
+  peg_init_left(node, expr);
+  return node;
+}
+
+peg_expr_t *peg_and(peg_expr_t *left, peg_expr_t *right) {
+  peg_expr_t *node = peg_init(Node_And);
+  peg_init_left(node, left);
+  peg_init_right(node, right);
+  return node;
+}
+
+peg_expr_t *peg_not(peg_expr_t *expr) {
+  peg_expr_t *node = peg_init(Node_Not);
+  peg_init_left(node, expr);
   return node;
 }
