@@ -1,6 +1,8 @@
 #ifndef EXPRESSION_H
 #define EXPRESSION_H
 
+#include <stdbool.h>
+
 /**
  * Data type definitions
  */
@@ -39,10 +41,13 @@ peg_expr_t *peg_choice(peg_expr_t *left, peg_expr_t *right);
 peg_expr_t *peg_optional(peg_expr_t *expr);
 peg_expr_t *peg_and(peg_expr_t *left, peg_expr_t *right);
 peg_expr_t *peg_not(peg_expr_t *expr);
+bool isa(peg_expr_t *node, peg_expr_node_t type);
 
 /**
  * Printing expression trees
  */
 const char *peg_expr_name(peg_expr_t *node);
+void peg_print_expr(peg_expr_t *node);
+void peg_print_expr_indented(peg_expr_t *node, int indent);
 
 #endif

@@ -115,3 +115,7 @@ peg_expr_t *peg_not(peg_expr_t *expr) {
   peg_init_left(node, expr);
   return node;
 }
+
+bool isa(peg_expr_t *node, peg_expr_node_t type) {
+  return node->type == type;
+}
