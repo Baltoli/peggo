@@ -1,4 +1,3 @@
-#include "expression_p.h"
 #include "expression.h"
 
 peg_expr_t node_init() {
