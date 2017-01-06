@@ -1,4 +1,4 @@
-add_library(libpeggo
+add_library(peggo
   expression_construct.c
   expression_print.c
 )

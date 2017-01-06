@@ -3,10 +3,10 @@ project(Peggo)
 
 add_subdirectory(src/peggo)
 
-add_executable(peggo
+add_executable(main
   src/main.c
 )
 
-target_link_libraries(peggo
-  libpeggo
+target_link_libraries(main
+  peggo
 )
