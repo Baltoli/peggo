@@ -4,8 +4,8 @@
 
 #include "rule.h"
 
-peg_rule_t *peg_rule_init(char *sym, peg_expr_t *expr) {
-  peg_rule_t *rule = malloc(sizeof(peg_rule_t));
+rule_t *rule_init(char *sym, expr_t *expr) {
+  rule_t *rule = malloc(sizeof(rule_t));
   if(!rule) {
     exit(EXIT_FAILURE);
   }
@@ -20,17 +20,17 @@ peg_rule_t *peg_rule_init(char *sym, peg_expr_t *expr) {
   return rule;
 }
 
-void peg_rule_free(peg_rule_t *rule) {
+void rule_free(rule_t *rule) {
   if(!rule) {
     return;
   }
 
-  peg_expr_free(rule->production);
+  expr_free(rule->production);
   free(rule->symbol);
   free(rule);
 }
 
-void peg_print_rule(peg_rule_t *rule) {
+void print_rule(rule_t *rule) {
   printf("%s ->\n", rule->symbol);
-  peg_print_expr_indented(rule->production, 1);
+  print_expr_indented(rule->production, 1);
 }

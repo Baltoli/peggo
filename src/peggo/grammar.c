@@ -3,8 +3,8 @@
 
 #include "grammar.h"
 
-peg_grammar_t *peg_grammar_init(peg_expr_t *st, peg_rule_t *rs, size_t rc) {
-  peg_grammar_t *grammar = malloc(sizeof(*grammar));
+grammar_t *grammar_init(expr_t *st, rule_t *rs, size_t rc) {
+  grammar_t *grammar = malloc(sizeof(*grammar));
   if(!grammar) {
     exit(EXIT_FAILURE);
   }
@@ -15,11 +15,11 @@ peg_grammar_t *peg_grammar_init(peg_expr_t *st, peg_rule_t *rs, size_t rc) {
   return grammar;
 }
 
-void peg_print_grammar(peg_grammar_t *grammar) {
+void print_grammar(grammar_t *grammar) {
   printf("Start: ");
-  peg_print_expr(grammar->start);
+  print_expr(grammar->start);
   printf("\n");
   for(size_t i = 0; i < grammar->rules_count; i++) {
-    peg_print_rule(&grammar->rules[i]);
+    print_rule(&grammar->rules[i]);
   }
 }

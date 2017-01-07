@@ -6,7 +6,7 @@
 /**
  * Data type definitions
  */
-typedef enum peg_expr_node_en {
+typedef enum expr_node_en {
   Node_Invalid = 0,
   Node_Empty,
   Node_Terminal,
@@ -18,36 +18,36 @@ typedef enum peg_expr_node_en {
   Node_Optional,
   Node_And,
   Node_Not
-} peg_expr_node_t;
+} expr_node_t;
 
-typedef struct peg_expr_st {
-  enum peg_expr_node_en type;
+typedef struct expr_st {
+  enum expr_node_en type;
   char *data;
-  struct peg_expr_st *left;
-  struct peg_expr_st *right;
-} peg_expr_t;
+  struct expr_st *left;
+  struct expr_st *right;
+} expr_t;
 
 /**
  * Constructors and memory management
  */
-void peg_expr_free(peg_expr_t *node);
-peg_expr_t *peg_empty();
-peg_expr_t *peg_terminal(const char *t);
-peg_expr_t *peg_non_terminal(const char *nt);
-peg_expr_t *peg_sequence(peg_expr_t *left, peg_expr_t *right);
-peg_expr_t *peg_zero_or_more(peg_expr_t *expr);
-peg_expr_t *peg_one_or_more(peg_expr_t *expr);
-peg_expr_t *peg_choice(peg_expr_t *left, peg_expr_t *right);
-peg_expr_t *peg_optional(peg_expr_t *expr);
-peg_expr_t *peg_and(peg_expr_t *left, peg_expr_t *right);
-peg_expr_t *peg_not(peg_expr_t *expr);
-bool isa(peg_expr_t *node, peg_expr_node_t type);
+void expr_free(expr_t *node);
+expr_t *empty();
+expr_t *terminal(const char *t);
+expr_t *non_terminal(const char *nt);
+expr_t *sequence(expr_t *left, expr_t *right);
+expr_t *zero_or_more(expr_t *expr);
+expr_t *one_or_more(expr_t *expr);
+expr_t *choice(expr_t *left, expr_t *right);
+expr_t *optional(expr_t *expr);
+expr_t *and(expr_t *left, expr_t *right);
+expr_t *not(expr_t *expr);
+bool isa(expr_t *node, expr_node_t type);
 
 /**
  * Printing expression trees
  */
-const char *peg_expr_name(peg_expr_t *node);
-void peg_print_expr(peg_expr_t *node);
-void peg_print_expr_indented(peg_expr_t *node, int indent);
+const char *expr_name(expr_t *node);
+void print_expr(expr_t *node);
+void print_expr_indented(expr_t *node, int indent);
 
 #endif

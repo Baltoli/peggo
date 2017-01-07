@@ -5,13 +5,13 @@
 
 #include "rule.h"
 
-typedef struct peg_grammar_st {
-  peg_expr_t *start;
-  peg_rule_t *rules;
+typedef struct grammar_st {
+  expr_t *start;
+  rule_t *rules;
   size_t rules_count;
-} peg_grammar_t;
+} grammar_t;
 
-peg_grammar_t *peg_grammar_init(peg_expr_t *st, peg_rule_t *rs, size_t rc);
-void peg_print_grammar(peg_grammar_t *grammar);
+grammar_t *grammar_init(expr_t *st, rule_t *rs, size_t rc);
+void print_grammar(grammar_t *grammar);
 
 #endif
