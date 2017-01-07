@@ -35,3 +35,22 @@ void peg_parse_free(peg_parse_t *tree) {
     peg_parse_free(&tree->children[i]);
   }
 }
+
+void peg_parse_add_child(peg_parse_t *tree, peg_parse_t *child) {
+  if(!tree || !child) {
+    return;
+  }
+
+  if(tree->children) {
+    tree->children = realloc(tree->children, (sizeof(peg_parse_t) * tree->n_children) + 1);
+  } else {
+    tree->children = malloc(sizeof(peg_parse_t));
+  }
+
+  if(!tree->children) {
+    exit(EXIT_FAILURE);
+  }
+
+  tree->children[tree->n_children] = *child;
+  tree->n_children++;
+}

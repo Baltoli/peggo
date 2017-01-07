@@ -13,5 +13,6 @@ typedef struct peg_parse_st {
 
 peg_parse_t *peg_parse_init(char *s, size_t st, size_t len);
 void peg_parse_free(peg_parse_t *tree);
+void peg_parse_add_child(peg_parse_t *tree, peg_parse_t *child);
 
 #endif
