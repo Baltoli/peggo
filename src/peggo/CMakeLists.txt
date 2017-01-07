@@ -3,4 +3,6 @@ add_library(peggo
   expression_print.c
   rule.c
   grammar.c
+  parse_tree.c
+  common.c
 )
