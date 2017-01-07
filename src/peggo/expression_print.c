@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#include "common.h"
 #include "expression.h"
 
 const char *peg_expr_name(peg_expr_t *node) {
@@ -26,12 +27,6 @@ const char *peg_expr_name(peg_expr_t *node) {
       return "Not";
     default:
       return "INVALID";
-  }
-}
-
-void print_indents(int indent) {
-  for(int i = 0; i < indent; i++) {
-    printf("  ");
   }
 }
 
