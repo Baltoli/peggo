@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -53,4 +54,15 @@ void peg_parse_add_child(peg_parse_t *tree, peg_parse_t *child) {
 
   tree->children[tree->n_children] = *child;
   tree->n_children++;
+}
+
+void peg_print_parse_indented(peg_parse_t *tree, int indent) {
+  printf("%s [%zu, %zu)\n", tree->symbol, tree->start, tree->start + tree->length);
+  for(size_t i = 0; i < tree->n_children; i++) {
+    peg_print_parse_indented(&tree->children[i], indent + 1);
+  }
+}
+
+void peg_print_parse(peg_parse_t *tree) {
+  peg_print_parse_indented(tree, 0);
 }
