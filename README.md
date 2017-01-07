@@ -51,11 +51,11 @@ So the parser constructs a parse tree - nodes in the tree are productions of the
 grammar together with the start and end index into the string for that
 particular production. e.g.
 
-  Start [0,3]
-    Number [0,3]
-      Digit [0,1]
-      Digit [1,1]
-      Digit [2,1]
+    Start [0,3]
+      Number [0,3]
+        Digit [0,1]
+        Digit [1,1]
+        Digit [2,1]
 
 Every node in the parse tree therefore will have an identical structure:
 
