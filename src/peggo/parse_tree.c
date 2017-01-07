@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "common.h"
 #include "parse_tree.h"
 
 peg_parse_t *peg_parse_init(char *s, size_t st, size_t len) {
@@ -43,7 +44,7 @@ void peg_parse_add_child(peg_parse_t *tree, peg_parse_t *child) {
   }
 
   if(tree->children) {
-    tree->children = realloc(tree->children, (sizeof(peg_parse_t) * tree->n_children) + 1);
+    tree->children = realloc(tree->children, sizeof(peg_parse_t) * (tree->n_children + 1));
   } else {
     tree->children = malloc(sizeof(peg_parse_t));
   }
@@ -57,6 +58,8 @@ void peg_parse_add_child(peg_parse_t *tree, peg_parse_t *child) {
 }
 
 void peg_print_parse_indented(peg_parse_t *tree, int indent) {
+  print_indents(indent);
+
   printf("%s [%zu, %zu)\n", tree->symbol, tree->start, tree->start + tree->length);
   for(size_t i = 0; i < tree->n_children; i++) {
     peg_print_parse_indented(&tree->children[i], indent + 1);
