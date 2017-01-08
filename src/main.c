@@ -1,5 +1,6 @@
 #include "peggo/grammar.h"
 #include "peggo/parse_tree.h"
+#include "peggo/parser.h"
 
 int main(int argc, char **argv) {
   expr_t *g = 
@@ -20,5 +21,13 @@ int main(int argc, char **argv) {
   parse_add_child(tree, parse_init("Digit", 2, 1));
   print_parse(tree);
   parse_free(tree);
+
+  parse_t *parent = parse_init("Something", 0, 100);
+  char *source = "hello, world";
+  parse_terminal(source, "hello, world", 0, parent);
+  parse_terminal(source, "hello", 0, parent);
+  print_parse(parent);
+  parse_free(parent);
+
   return 0;
 }

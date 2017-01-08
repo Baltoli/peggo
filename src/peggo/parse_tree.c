@@ -58,6 +58,11 @@ void parse_add_child(parse_t *tree, parse_t *child) {
 }
 
 void print_parse_indented(parse_t *tree, int indent) {
+  if(!tree) {
+    printf("[NO PARSE]\n");
+    return;
+  }
+
   print_indents(indent);
 
   printf("%s [%zu, %zu)\n", tree->symbol, tree->start, tree->start + tree->length);

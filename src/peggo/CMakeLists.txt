@@ -5,4 +5,5 @@ add_library(peggo
   grammar.c
   parse_tree.c
   common.c
+  parser.c
 )
