@@ -3,14 +3,17 @@
 
 #include "parser.h"
 
-parse_t *parse(char *source, grammar_t *grammar) {
-  // TODO
+static grammar_t *grammar;
+
+parse_t *parse(char *source, grammar_t *gram) {
+  grammar = gram;
+
   parse_t *parent = parse_init("Start", 0, 0);
-  return parse_dispatch(source, NULL, 0, parent);
+  parse_dispatch(source, NULL, 0, parent);
+  return parent;
 }
 
 parse_t *parse_dispatch(char *source, expr_t *rule, size_t start, parse_t *parent) {
-  // TODO
   switch(rule->type) {
   }
   return NULL;
