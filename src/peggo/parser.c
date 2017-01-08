@@ -10,6 +10,9 @@ parse_t *parse(char *source, grammar_t *gram) {
   grammar = gram;
 
   parse_t *parent = parse_dispatch(source, gram->start, 0, NULL);
+  if(!parent) {
+    return NULL;
+  }
 
   parent->length = parse_total_length(parent);
   return parent;
@@ -28,6 +31,7 @@ parse_t *parse_dispatch(char *source, expr_t *rule, size_t start, parse_t *paren
     case Node_Non_Terminal:
       return parse_non_terminal(source, rule->data, start, parent);
   }
+
   return NULL;
 }
 
@@ -70,7 +74,11 @@ parse_t *parse_non_terminal(char *source, char *symbol, size_t start, parse_t *p
   }
 
   parse_t *this = parse_init(symbol, start, 0);
-  parse_dispatch(source, rule->production, start, this);
+  parse_t *result = parse_dispatch(source, rule->production, start, this);
+  if(!result) {
+    return NULL;
+  }
+
   this->length = parse_total_length(this);
   
   parse_add_child(parent, this);
