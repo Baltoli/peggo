@@ -74,3 +74,11 @@ void print_parse_indented(parse_t *tree, int indent) {
 void print_parse(parse_t *tree) {
   print_parse_indented(tree, 0);
 }
+
+size_t parse_total_length(parse_t *tree) {
+  size_t len = 0;
+  for(size_t i = 0; i < tree->n_children; i++) {
+    len += tree->children[i].length;
+  }
+  return len;
+}

@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -8,13 +9,24 @@ static grammar_t *grammar;
 parse_t *parse(char *source, grammar_t *gram) {
   grammar = gram;
 
-  parse_t *parent = parse_init("Start", 0, 0);
-  parse_dispatch(source, NULL, 0, parent);
+  parse_t *parent = parse_dispatch(source, gram->start, 0, NULL);
+
+  parent->length = parse_total_length(parent);
   return parent;
 }
 
 parse_t *parse_dispatch(char *source, expr_t *rule, size_t start, parse_t *parent) {
+  if(!rule) {
+    return NULL;
+  }
+
   switch(rule->type) {
+    case Node_Empty:
+      return parse_empty(source, start, parent);
+    case Node_Terminal:
+      return parse_terminal(source, rule->data, start, parent);
+    case Node_Non_Terminal:
+      return parse_non_terminal(source, rule->data, start, parent);
   }
   return NULL;
 }
@@ -51,20 +63,16 @@ parse_t *parse_terminal(char *source, char *symbol, size_t start, parse_t *paren
 }
 
 parse_t *parse_non_terminal(char *source, char *symbol, size_t start, parse_t *parent) {
-  // TODO: this needs to do quite a lot of work:
-  //        - Needs to get the rule from somewhere. We have the grammar at the
-  //          start of parsing, but this would need to be passed around a lot.
-  //          One option is to make the parser non-thread safe and just have a
-  //          static variable in the parser that contains a mapping from symbols
-  //          to rules. This is also the point at which the grammar could be
-  //          checked for validity (every non-terminal used needs a production
-  //          rule).
-  //        - Given a rule, needs to parse it. We should write a generic
-  //          dispatcher for expression node types. Parsing a sub-node of an
-  //          expression will basically amount to looking up what the type is,
-  //          then calling the appropriate parsing methods with the newly
-  //          constructed parent node.
-  //        - Remember: no other node type should modify the recursive parameter
-  //          parent, only non-terminal. All others end up in a flat structure.
-  return NULL;
+  rule_t *rule = grammar_production(grammar, symbol);
+  if(!rule) {
+    printf("Invalid grammar - no rule for non-terminal %s\n", symbol);
+    exit(EXIT_FAILURE);
+  }
+
+  parse_t *this = parse_init(symbol, start, 0);
+  parse_dispatch(source, rule->production, start, this);
+  this->length = parse_total_length(this);
+  
+  parse_add_child(parent, this);
+  return this;
 }
