@@ -30,6 +30,8 @@ parse_t *parse_dispatch(char *source, expr_t *rule, size_t start, parse_t *paren
       return parse_terminal(source, rule->data, start, parent);
     case Node_Non_Terminal:
       return parse_non_terminal(source, rule->data, start, parent);
+    case Node_Sequence:
+      return parse_sequence(source, rule->left, rule->right, start, parent);
   }
 
   return NULL;
@@ -83,4 +85,23 @@ parse_t *parse_non_terminal(char *source, char *symbol, size_t start, parse_t *p
   
   parse_add_child(parent, this);
   return this;
+}
+
+parse_t *parse_sequence(char *source, expr_t *left, expr_t *right, size_t start, parse_t *parent) {
+  if(!left || !right) {
+    return NULL;
+  }
+
+  parse_t *left_result = parse_dispatch(source, left, start, parent);
+  if(!left_result) {
+    return NULL;
+  }
+
+  parse_t *right_result = parse_dispatch(source, right, start + left_result->length, parent);
+  if(!right_result) {
+    parse_free(left_result);
+    return NULL;
+  }
+
+  return right_result;
 }
