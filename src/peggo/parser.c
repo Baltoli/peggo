@@ -38,15 +38,15 @@ parse_t *parse_dispatch(char *source, expr_t *rule, size_t start, parse_t *paren
       return parse_zero_or_more(source, rule->left, start, parent);
     case Node_One_Or_More:
       return parse_one_or_more(source, rule->left, start, parent);
+    case Node_Optional:
+      return parse_optional(source, rule->left, start, parent);
   }
 
   return NULL;
 }
 
 parse_t *parse_empty(char *source, size_t start, parse_t *parent) {
-  parse_t *node = parse_init("__empty", start, 0);
-  parse_add_child(parent, node);
-  return node;
+  return parse_init("__empty", start, 0);
 }
 
 parse_t *parse_terminal(char *source, char *symbol, size_t start, parse_t *parent) {
@@ -109,7 +109,8 @@ parse_t *parse_sequence(char *source, expr_t *left, expr_t *right, size_t start,
     return NULL;
   }
 
-  return right_result;
+  left_result->length += right_result->length;
+  return left_result;
 }
 
 parse_t *parse_choice(char *source, expr_t *left, expr_t *right, size_t start, parse_t *parent) {
@@ -132,13 +133,14 @@ parse_t *parse_zero_or_more(char *source, expr_t *expr, size_t start, parse_t *p
   }
 
   size_t offset = start;
-  parse_t *result;
+  parse_t *result = NULL;
 
   while((result = parse_dispatch(source, expr, offset, parent))) {
     offset += result->length;
   }
 
   parse_t *ret = result ? result : parse_init("__plus_end", offset, 0);
+  ret->length = offset - start;
   return ret;
 }
 
@@ -155,5 +157,18 @@ parse_t *parse_one_or_more(char *source, expr_t *expr, size_t start, parse_t *pa
     offset += result->length;
   }
 
+  if(prev) {
+    prev->length = offset - start;
+  }
+
   return prev;
+}
+
+parse_t *parse_optional(char *source, expr_t *expr, size_t start, parse_t *parent) {
+  if(!expr) {
+    return NULL;
+  }
+
+  parse_t *result = parse_dispatch(source, expr, start, parent);
+  return result ? result : parse_init("__optional", start, 0);
 }

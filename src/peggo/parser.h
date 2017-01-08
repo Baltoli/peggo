@@ -13,5 +13,6 @@ parse_t *parse_sequence(char *source, expr_t *left, expr_t *right, size_t start,
 parse_t *parse_choice(char *source, expr_t *left, expr_t *right, size_t start, parse_t *parent);
 parse_t *parse_zero_or_more(char *source, expr_t *expr, size_t start, parse_t *parent);
 parse_t *parse_one_or_more(char *source, expr_t *expr, size_t start, parse_t *parent);
+parse_t *parse_optional(char *source, expr_t *expr, size_t start, parse_t *parent);
 
 #endif

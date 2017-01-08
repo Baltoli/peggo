@@ -3,12 +3,20 @@
 #include "peggo/parser.h"
 
 int main(int argc, char **argv) {
+  expr_t *whitespace = one_or_more(
+    choice(
+      terminal(" "),
+      terminal("\t")
+    )
+  );
+
   expr_t *start_e =
-    one_or_more(
-        choice(
-          terminal("helo"),
-          non_terminal("World")
-        )
+    sequence(
+      sequence(
+        optional(whitespace),
+        terminal("y")
+      ),
+      terminal("hello")
     );
   rule_t *start = rule_init("Start", start_e);
   
@@ -24,8 +32,7 @@ int main(int argc, char **argv) {
 
   grammar_t *gram = grammar_init(non_terminal("Start"), rules, 3);
   print_grammar(gram);
-
-  char *source = "heloworldworldheloheloworld";
+  char *source = "\t     yhello";
   parse_t *result = parse(source, gram);
   print_parse(result);
   return 0;
