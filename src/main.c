@@ -1,38 +1,56 @@
+#include <stdio.h>
+#include <string.h>
+
 #include "peggo/grammar.h"
 #include "peggo/parse_tree.h"
 #include "peggo/parser.h"
 
 int main(int argc, char **argv) {
-  expr_t *whitespace = one_or_more(
+  rule_t *digit = rule_init("Digit", 
     choice(
-      terminal(" "),
-      terminal("\t")
+      terminal("0"), choice(
+      terminal("1"), choice(
+      terminal("2"), choice(
+      terminal("3"), choice(
+      terminal("4"), choice(
+      terminal("5"), choice(
+      terminal("6"), choice(
+      terminal("7"), choice(
+      terminal("8"), 
+      terminal("9")))))))))
     )
   );
 
-  expr_t *start_e = 
-    sequence(
-      not(
-        terminal("hello")
-      ),
-    terminal("hel")
+  rule_t *sign = rule_init("Sign",
+    choice(
+      terminal("+"),
+      terminal("-")
+    )
   );
-  rule_t *start = rule_init("Start", start_e);
-  
-  expr_t *world_e = terminal("world");
-  rule_t *world = rule_init("World", world_e);
 
-  expr_t *thing_e = non_terminal("World");
-  rule_t *thing = rule_init("Thing", sequence(thing_e, empty()));
+  rule_t *number = rule_init("Number",
+    sequence(
+      optional(non_terminal("Sign")),
+      one_or_more(non_terminal("Digit"))
+    )
+  );
 
-  rule_t rules[3] = {
-    *start, *world, *thing
+  rule_t *start = rule_init("Start", non_terminal("Number"));
+
+  rule_t rules[] = {
+    *digit, *start, *sign, *number
   };
 
-  grammar_t *gram = grammar_init(non_terminal("Start"), rules, 3);
+  grammar_t *gram = grammar_init(non_terminal("Start"), rules, 4);
   print_grammar(gram);
-  char *source = "hello";
+
+  char *source = "+91234";
   parse_t *result = parse(source, gram);
+
+  if(result && result->length != strlen(source)) {
+    printf("Didn't consume the full input\n");
+  }
+
   print_parse(result);
   return 0;
 }
