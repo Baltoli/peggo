@@ -1,24 +1,56 @@
+#include <stdio.h>
+#include <string.h>
+
 #include "peggo/grammar.h"
 #include "peggo/parse_tree.h"
+#include "peggo/parser.h"
 
 int main(int argc, char **argv) {
-  expr_t *g = 
+  rule_t *digit = rule_init("Digit", 
+    choice(
+      terminal("0"), choice(
+      terminal("1"), choice(
+      terminal("2"), choice(
+      terminal("3"), choice(
+      terminal("4"), choice(
+      terminal("5"), choice(
+      terminal("6"), choice(
+      terminal("7"), choice(
+      terminal("8"), 
+      terminal("9")))))))))
+    )
+  );
+
+  rule_t *sign = rule_init("Sign",
+    choice(
+      terminal("+"),
+      terminal("-")
+    )
+  );
+
+  rule_t *number = rule_init("Number",
     sequence(
-      and(
-        not(non_terminal("err")),
-        not(non_terminal("woo"))
-      ),
-      terminal("hello")
-    );
-  rule_t *rule = rule_init("sym", g);
-  grammar_t *gram = grammar_init(non_terminal("sym"), rule, 1);
+      optional(non_terminal("Sign")),
+      one_or_more(non_terminal("Digit"))
+    )
+  );
+
+  rule_t *start = rule_init("Start", non_terminal("Number"));
+
+  rule_t rules[] = {
+    *digit, *start, *sign, *number
+  };
+
+  grammar_t *gram = grammar_init(non_terminal("Start"), rules, 4);
   print_grammar(gram);
 
-  parse_t *tree = parse_init("Start", 0, 3);
-  parse_add_child(tree, parse_init("Digit", 0, 1));
-  parse_add_child(tree, parse_init("Digit", 1, 1));
-  parse_add_child(tree, parse_init("Digit", 2, 1));
-  print_parse(tree);
-  parse_free(tree);
+  char *source = "+91234";
+  parse_t *result = parse(source, gram);
+
+  if(result && result->length != strlen(source)) {
+    printf("Didn't consume the full input\n");
+  }
+
+  print_parse(result);
   return 0;
 }

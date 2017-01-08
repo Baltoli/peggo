@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "grammar.h"
 
@@ -22,4 +23,25 @@ void print_grammar(grammar_t *grammar) {
   for(size_t i = 0; i < grammar->rules_count; i++) {
     print_rule(&grammar->rules[i]);
   }
+}
+
+void grammar_free(grammar_t *grammar) {
+  if(!grammar) {
+    return;
+  }
+
+  expr_free(grammar->start);
+  for(size_t i = 0; i < grammar->rules_count; i++) {
+    rule_free(&grammar->rules[i]);
+  }
+}
+
+rule_t *grammar_production(grammar_t *grammar, char *symbol) {
+  for(size_t i = 0; i < grammar->rules_count; i++) {
+    if(strcmp(symbol, grammar->rules[i].symbol) == 0) {
+      return &grammar->rules[i];
+    }
+  }
+
+  return NULL;
 }

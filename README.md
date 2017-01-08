@@ -69,3 +69,50 @@ Every node in the parse tree therefore will have an identical structure:
 
 Then an AST can be constructed from the parse tree by recursively walking it
 rather than using a callback mechanism.
+
+What qualifies as a child in the parse tree data structure? Sequences and zero /
+one or more are what we need to be able to represent, but can't really at the
+moment.
+
+Consider
+    
+    Number <- Digit+
+    Digit <- 0 | 1
+
+The grammar in this situation is
+
+    Number:
+      OneOrMore(
+        NonTerminal(
+          'Digit'
+        )
+      )
+
+    Digit:
+      Choice(
+        Terminal('0')
+        Terminal('1)
+      )
+
+Ideally we'd like to represent this (in the parse tree) as something like:
+
+    Number 0:3
+      Digit 0:1
+        0:1 '0'
+      Digit 1:1
+        1:1 '1'
+      Digit 2:1
+        2:1 '0'
+
+So what I think this means is that *sequential* operators in the grammar
+(sequence, zero-or-more and one-or-more) need to be added in a *flat* way to
+their parent. Only non-terminals can have children in the tree (from production
+rules).
+
+One way to do this is to pass a pointer to the parent into the parsing
+functions. This would restore the recursive nature of parsing while still
+allowing for many children to share the same parent node. When a non-terminal is
+reached in the parser, we would look up the corresponding rule in the grammar.
+Then, run each sub-component of the parsing expression with the parent passed
+in. Finally, once the recursion is done, the parent can compute its own length
+from its children's lengths.
