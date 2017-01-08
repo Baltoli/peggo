@@ -42,6 +42,11 @@ parse_t *parse_dispatch(char *source, expr_t *rule, size_t start, parse_t *paren
       return parse_optional(source, rule->left, start, parent);
     case Node_And:
       return parse_and(source, rule->left, start);
+    case Node_Not:
+      return parse_not(source, rule->left, start);
+    default:
+      printf("Invalid node in grammar - fatal error\n");
+      exit(EXIT_FAILURE);
   }
 
   return NULL;
@@ -187,4 +192,17 @@ parse_t *parse_and(char *source, expr_t *expr, size_t start) {
   }
 
   return NULL;
+}
+
+parse_t *parse_not(char *source, expr_t *expr, size_t start) {
+  if(!expr) {
+    return NULL;
+  }
+
+  parse_t *result = parse_dispatch(source, expr, start, NULL);
+  if(result) {
+    return NULL;
+  }
+
+  return parse_init("__not", start, 0);
 }

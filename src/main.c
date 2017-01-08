@@ -12,8 +12,8 @@ int main(int argc, char **argv) {
 
   expr_t *start_e = 
     sequence(
-      and(
-        terminal("hello there guys")
+      not(
+        terminal("hello")
       ),
     terminal("hel")
   );
@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
 
   grammar_t *gram = grammar_init(non_terminal("Start"), rules, 3);
   print_grammar(gram);
-  char *source = "hello there guys";
+  char *source = "hello";
   parse_t *result = parse(source, gram);
   print_parse(result);
   return 0;
