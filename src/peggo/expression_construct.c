@@ -111,10 +111,9 @@ expr_t *optional(expr_t *expr) {
   return node;
 }
 
-expr_t *and(expr_t *left, expr_t *right) {
+expr_t *and(expr_t *expr) {
   expr_t *node = expr_init(Node_And);
-  init_left(node, left);
-  init_right(node, right);
+  init_left(node, expr);
   return node;
 }
 

@@ -40,6 +40,8 @@ parse_t *parse_dispatch(char *source, expr_t *rule, size_t start, parse_t *paren
       return parse_one_or_more(source, rule->left, start, parent);
     case Node_Optional:
       return parse_optional(source, rule->left, start, parent);
+    case Node_And:
+      return parse_and(source, rule->left, start);
   }
 
   return NULL;
@@ -171,4 +173,18 @@ parse_t *parse_optional(char *source, expr_t *expr, size_t start, parse_t *paren
 
   parse_t *result = parse_dispatch(source, expr, start, parent);
   return result ? result : parse_init("__optional", start, 0);
+}
+
+parse_t *parse_and(char *source, expr_t *expr, size_t start) {
+  if(!expr) {
+    return NULL;
+  }
+
+  parse_t *result = parse_dispatch(source, expr, start, NULL);
+
+  if(result) {
+    return parse_init("__and", start, 0);
+  }
+
+  return NULL;
 }

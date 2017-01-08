@@ -10,14 +10,13 @@ int main(int argc, char **argv) {
     )
   );
 
-  expr_t *start_e =
+  expr_t *start_e = 
     sequence(
-      sequence(
-        optional(whitespace),
-        terminal("y")
+      and(
+        terminal("hello there guys")
       ),
-      terminal("hello")
-    );
+    terminal("hel")
+  );
   rule_t *start = rule_init("Start", start_e);
   
   expr_t *world_e = terminal("world");
@@ -32,7 +31,7 @@ int main(int argc, char **argv) {
 
   grammar_t *gram = grammar_init(non_terminal("Start"), rules, 3);
   print_grammar(gram);
-  char *source = "\t     yhello";
+  char *source = "hello there guys";
   parse_t *result = parse(source, gram);
   print_parse(result);
   return 0;

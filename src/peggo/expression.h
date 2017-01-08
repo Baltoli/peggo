@@ -39,7 +39,7 @@ expr_t *zero_or_more(expr_t *expr);
 expr_t *one_or_more(expr_t *expr);
 expr_t *choice(expr_t *left, expr_t *right);
 expr_t *optional(expr_t *expr);
-expr_t *and(expr_t *left, expr_t *right);
+expr_t *and(expr_t *expr);
 expr_t *not(expr_t *expr);
 bool isa(expr_t *node, expr_node_t type);
 
