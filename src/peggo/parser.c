@@ -32,6 +32,8 @@ parse_t *parse_dispatch(char *source, expr_t *rule, size_t start, parse_t *paren
       return parse_non_terminal(source, rule->data, start, parent);
     case Node_Sequence:
       return parse_sequence(source, rule->left, rule->right, start, parent);
+    case Node_Choice:
+      return parse_choice(source, rule->left, rule->right, start, parent);
   }
 
   return NULL;
@@ -103,5 +105,19 @@ parse_t *parse_sequence(char *source, expr_t *left, expr_t *right, size_t start,
     return NULL;
   }
 
+  return right_result;
+}
+
+parse_t *parse_choice(char *source, expr_t *left, expr_t *right, size_t start, parse_t *parent) {
+  if(!left || !right) {
+    return NULL;
+  }
+
+  parse_t *left_result = parse_dispatch(source, left, start, parent);
+  if(left_result) {
+    return left_result;
+  }
+
+  parse_t *right_result = parse_dispatch(source, right, start, parent);
   return right_result;
 }

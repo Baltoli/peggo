@@ -3,11 +3,11 @@
 #include "peggo/parser.h"
 
 int main(int argc, char **argv) {
-  expr_t *start_e = sequence(
-      non_terminal("World"),
+  expr_t *start_e = choice(
+      terminal("helo"),
       sequence(
-        non_terminal("Thing"),
-        non_terminal("Thing")
+        terminal("hello"),
+        non_terminal("World")
       )
   );
   rule_t *start = rule_init("Start", start_e);
@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
   grammar_t *gram = grammar_init(non_terminal("Start"), rules, 3);
   print_grammar(gram);
 
-  char *source = "worldworldworld";
+  char *source = "helloworld";
   parse_t *result = parse(source, gram);
   print_parse(result);
   return 0;
