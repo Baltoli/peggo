@@ -36,6 +36,8 @@ parse_t *parse_dispatch(char *source, expr_t *rule, size_t start, parse_t *paren
       return parse_choice(source, rule->left, rule->right, start, parent);
     case Node_Zero_Or_More:
       return parse_zero_or_more(source, rule->left, start, parent);
+    case Node_One_Or_More:
+      return parse_one_or_more(source, rule->left, start, parent);
   }
 
   return NULL;
@@ -134,9 +136,24 @@ parse_t *parse_zero_or_more(char *source, expr_t *expr, size_t start, parse_t *p
 
   while((result = parse_dispatch(source, expr, offset, parent))) {
     offset += result->length;
-    printf("Trying at new offset %zu\n", offset);
   }
 
   parse_t *ret = result ? result : parse_init("__plus_end", offset, 0);
   return ret;
+}
+
+parse_t *parse_one_or_more(char *source, expr_t *expr, size_t start, parse_t *parent) {
+  if(!expr) {
+    return NULL;
+  }
+
+  size_t offset = start;
+  parse_t *result, *prev = NULL;
+
+  while((result = parse_dispatch(source, expr, offset, parent))) {
+    prev = result;
+    offset += result->length;
+  }
+
+  return prev;
 }

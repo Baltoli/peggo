@@ -4,7 +4,7 @@
 
 int main(int argc, char **argv) {
   expr_t *start_e =
-    zero_or_more(
+    one_or_more(
         choice(
           terminal("helo"),
           non_terminal("World")
