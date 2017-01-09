@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "parser.h"
+#include "parser_p.h"
 
 static grammar_t *grammar;
 
