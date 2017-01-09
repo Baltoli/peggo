@@ -9,3 +9,4 @@ FILE_PATTERNS          = *.h \
                          *.c
 RECURSIVE              = YES
 USE_MDFILE_AS_MAINPAGE = @doxy_main_page@
+JAVADOC_AUTOBRIEF      = YES

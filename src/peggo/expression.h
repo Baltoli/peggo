@@ -26,7 +26,7 @@ typedef enum expr_node_en {
 } expr_node_t;
 
 /**
- * \brief Represents a single node in a tree-structured PEG parsing expression.
+ * Represents a single node in a tree-structured PEG parsing expression.
  *
  * This structure recursively describes a PEG parsing expression. All nodes of
  * this type take ownership of their child nodes when they are constructed.
