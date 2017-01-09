@@ -140,7 +140,7 @@ expr_t *one_or_more(expr_t *expr);
  * parameters.
  *
  * \param left The first expression to be matched if possible
- * \param second The second expression to be matched
+ * \param right The second expression to be matched
  */
 expr_t *choice(expr_t *left, expr_t *right);
 
