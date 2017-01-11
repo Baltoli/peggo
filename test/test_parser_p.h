@@ -10,5 +10,9 @@ void terminal_success(void **state);
 void terminal_failure(void **state);
 void non_terminal_success(void **state);
 void non_terminal_failure(void **state);
+void sequence_success(void **state);
+void sequence_failure(void **state);
+void sequence_first(void **state);
+void sequence_second(void **state);
 
 #endif

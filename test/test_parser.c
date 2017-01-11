@@ -18,6 +18,10 @@ const struct CMUnitTest parser_tests[] = {
   cmocka_unit_test(terminal_failure),
   cmocka_unit_test(non_terminal_success),
   cmocka_unit_test(non_terminal_failure),
+  cmocka_unit_test(sequence_success),
+  cmocka_unit_test(sequence_failure),
+  cmocka_unit_test(sequence_first),
+  cmocka_unit_test(sequence_second),
 };
 
 int test_parser(void) {
