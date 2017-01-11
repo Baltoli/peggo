@@ -1,7 +1,7 @@
 #include "test.h"
+#include "test_parser.h"
 
 int main(void) {
-      const struct CMUnitTest tests[] = {
-      };
-      return cmocka_run_group_tests(tests, NULL, NULL);
+  int parser_result = test_parser();
+  return parser_result;
 }

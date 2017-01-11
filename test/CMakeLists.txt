@@ -1,2 +1,15 @@
-add_executable(unit_tests main.c)
+add_executable(unit_tests 
+  main.c
+  test_parser.c
+  test_parser_empty.c
+  test_parser_terminal.c
+  test_parser_non_terminal.c
+  test_parser_sequence.c
+  test_parser_choice.c
+  test_parser_zero.c
+  test_parser_one.c
+  test_parser_optional.c
+  test_parser_and.c
+  test_parser_not.c
+)
 target_link_libraries(unit_tests cmocka peggo)
