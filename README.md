@@ -36,8 +36,6 @@ The current interface presented by peggo is a C library that provides an
 interface to construct PEG grammars, and to parse strings according to these
 grammars.
 
-Currently, automatic installation using CMake is not supported, but this will be
-added in a future version. To use the project as it is now, build according to
-the instructions above, then copy `Build/src/peggo/libpeggo.a` and all header
-files in `src/peggo` to their appropriate locations. A project can then include
-the peggo header files and link using `-lpeggo`.
+The library can be installed with `make install` (the installation prefix is
+customisable as usual with CMake). Then include `<peggo/peggo.h>` and link with
+`-lpeggo` to use the parsing API as described in the documentation.
