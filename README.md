@@ -2,7 +2,8 @@
 
 [![Build Status](https://travis-ci.org/Baltoli/peggo.svg?branch=master)](https://travis-ci.org/Baltoli/peggo)
 
-This project implements a PEG parser generator written in C11.
+This project implements a PEG parser generator written in C11. Documentation for
+the latest version can be found [https://baltoli.github.io/peggo-docs/index.html](here).
 
 ## Building
 
