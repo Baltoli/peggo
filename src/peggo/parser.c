@@ -5,7 +5,7 @@
 #include "parser.h"
 #include "parser_p.h"
 
-static grammar_t *grammar;
+static _Thread_local grammar_t *grammar;
 
 parse_t *parse(char *source, grammar_t *gram) {
   grammar = gram;
