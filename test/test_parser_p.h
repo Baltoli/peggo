@@ -34,4 +34,7 @@ void one_or_more_failure(void **state);
 void optional_some(void **state);
 void optional_none(void **state);
 
+void and_false(void **state);
+void and_true(void **state);
+
 #endif
