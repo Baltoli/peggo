@@ -20,4 +20,4 @@ script:
   - mkdir Build
   - cd Build
   - cmake .. && make
-  - test/unit_tests
+  - make test

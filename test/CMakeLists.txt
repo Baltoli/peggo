@@ -1,4 +1,4 @@
-add_executable(unit_tests 
+add_executable(parser_unit_tests 
   main.c
   test_parser.c
   test_parser_empty.c
@@ -12,4 +12,9 @@ add_executable(unit_tests
   test_parser_and.c
   test_parser_not.c
 )
-target_link_libraries(unit_tests cmocka peggo)
+target_link_libraries(parser_unit_tests cmocka peggo)
+
+add_test(
+  NAME "ParserUnitTests"
+  COMMAND ${CMAKE_BINARY_DIR}/test/parser_unit_tests
+)

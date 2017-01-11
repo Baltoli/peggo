@@ -3,6 +3,7 @@ project(Peggo)
 
 find_package(cmocka)
 if(${cmocka_FOUND})
+  enable_testing()
   message(STATUS "Found cmocka, enabling unit tests")
   add_subdirectory(test)
 endif()
