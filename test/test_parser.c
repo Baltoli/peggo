@@ -14,21 +14,30 @@ static int teardown(void **state) {
 
 const struct CMUnitTest parser_tests[] = {
   cmocka_unit_test(empty_success),
+
   cmocka_unit_test(terminal_success),
   cmocka_unit_test(terminal_failure),
+
   cmocka_unit_test(non_terminal_success),
   cmocka_unit_test(non_terminal_failure),
+
   cmocka_unit_test(sequence_success),
   cmocka_unit_test(sequence_failure),
   cmocka_unit_test(sequence_first),
   cmocka_unit_test(sequence_second),
+
   cmocka_unit_test(choice_first),
   cmocka_unit_test(choice_second),
   cmocka_unit_test(choice_longer),
   cmocka_unit_test(choice_failure),
+
   cmocka_unit_test(zero_or_more_zero),
   cmocka_unit_test(zero_or_more_one),
   cmocka_unit_test(zero_or_more_many),
+
+  cmocka_unit_test(one_or_more_one),
+  cmocka_unit_test(one_or_more_many),
+  cmocka_unit_test(one_or_more_failure),
 };
 
 int test_parser(void) {

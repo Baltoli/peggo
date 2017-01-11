@@ -27,4 +27,8 @@ void zero_or_more_zero(void **state);
 void zero_or_more_one(void **state);
 void zero_or_more_many(void **state);
 
+void one_or_more_one(void **state);
+void one_or_more_many(void **state);
+void one_or_more_failure(void **state);
+
 #endif
