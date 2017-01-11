@@ -3,6 +3,7 @@ project(Peggo)
 
 find_package(cmocka)
 if(${cmocka_FOUND})
+  enable_testing()
   message(STATUS "Found cmocka, enabling unit tests")
   add_subdirectory(test)
 endif()
@@ -24,3 +25,4 @@ add_executable(main
 target_link_libraries(main
   peggo
 )
+
