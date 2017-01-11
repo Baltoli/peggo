@@ -31,4 +31,7 @@ void one_or_more_one(void **state);
 void one_or_more_many(void **state);
 void one_or_more_failure(void **state);
 
+void optional_some(void **state);
+void optional_none(void **state);
+
 #endif
