@@ -25,7 +25,7 @@ The available options that can be passed to CMake are:
 ### Tests
 
 Currently, tests for the project are implemented using
-[CMocka](http://www.cmocka.org), which must be installed in order to build the
+[CMocka](https://cmocka.org), which must be installed in order to build the
 test suite. If CMocka is installed, then the tests will be built automatically
 (however, this is optional; if CMocka is not installed, then the project can
 still be built without tests). The test suite can be run with `test/unit_tests`.
