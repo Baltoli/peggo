@@ -14,6 +14,7 @@ set(headers
   parse_tree.h
   rule.h
   grammar.h
+  peggo.h
 )
 set_target_properties(peggo
   PROPERTIES PUBLIC_HEADER "${headers}"
