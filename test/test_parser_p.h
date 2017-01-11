@@ -23,4 +23,8 @@ void choice_second(void **state);
 void choice_longer(void **state);
 void choice_failure(void **state);
 
+void zero_or_more_zero(void **state);
+void zero_or_more_one(void **state);
+void zero_or_more_many(void **state);
+
 #endif

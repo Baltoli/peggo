@@ -26,6 +26,9 @@ const struct CMUnitTest parser_tests[] = {
   cmocka_unit_test(choice_second),
   cmocka_unit_test(choice_longer),
   cmocka_unit_test(choice_failure),
+  cmocka_unit_test(zero_or_more_zero),
+  cmocka_unit_test(zero_or_more_one),
+  cmocka_unit_test(zero_or_more_many),
 };
 
 int test_parser(void) {

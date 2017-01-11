@@ -6,5 +6,6 @@ add_executable(unit_tests
   test_parser_non_terminal.c
   test_parser_sequence.c
   test_parser_choice.c
+  test_parser_zero.c
 )
 target_link_libraries(unit_tests cmocka peggo)
