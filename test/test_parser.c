@@ -44,6 +44,9 @@ const struct CMUnitTest parser_tests[] = {
 
   cmocka_unit_test(and_true),
   cmocka_unit_test(and_false),
+
+  cmocka_unit_test(not_true),
+  cmocka_unit_test(not_false),
 };
 
 int test_parser(void) {

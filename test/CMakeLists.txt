@@ -10,5 +10,6 @@ add_executable(unit_tests
   test_parser_one.c
   test_parser_optional.c
   test_parser_and.c
+  test_parser_not.c
 )
 target_link_libraries(unit_tests cmocka peggo)

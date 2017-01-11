@@ -37,4 +37,7 @@ void optional_none(void **state);
 void and_false(void **state);
 void and_true(void **state);
 
+void not_true(void **state);
+void not_false(void **state);
+
 #endif
