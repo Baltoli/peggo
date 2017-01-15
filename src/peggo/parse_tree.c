@@ -84,3 +84,15 @@ size_t parse_total_length(parse_t *tree) {
   }
   return len;
 }
+
+parse_t *parse_non_terminal_begin(parse_t *tree) {
+  return parse_non_terminal_next(tree, tree->children);
+}
+
+parse_t *parse_non_terminal_end(parse_t *tree) {
+  return tree->children + tree->n_children;
+}
+
+parse_t *parse_non_terminal_next(parse_t *tree, parse_t *child) {
+  return NULL;
+}
