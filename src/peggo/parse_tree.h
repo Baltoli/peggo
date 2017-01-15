@@ -3,6 +3,7 @@
 #ifndef PARSE_TREE_H
 #define PARSE_TREE_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
 /**
@@ -47,6 +48,18 @@ typedef struct parse_st {
    * The number of child nodes this result has.
    */
   size_t n_children;
+
+  /**
+   * Marks whether this node is a terminal or a non-terminal.
+   *
+   * This can't be reliably computed from other properties of the tree - it's
+   * perfectly valid for a non-terminal to be zero-length or have no children
+   * (if it's made up only of predicates, for example). It is better to set the
+   * property explicitly.
+   *
+   * Set to `false` by default by \ref parse_init.
+   */
+  bool terminal;
 } parse_t;
 
 /**

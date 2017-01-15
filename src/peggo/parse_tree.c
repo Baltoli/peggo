@@ -23,6 +23,8 @@ parse_t *parse_init(char *s, size_t st, size_t len) {
   tree->children = NULL;
   tree->n_children = 0;
 
+  tree->terminal = false;
+
   return tree;
 }
 
