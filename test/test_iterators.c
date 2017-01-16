@@ -48,7 +48,7 @@ void test_iterator_one(void **state) {
   parse_t *result = parse("hello", grammar);
 
   parse_t *begin = parse_non_terminal_begin(result);
-  parse_t *end = parse_non_terminal_begin(result);
+  parse_t *end = parse_non_terminal_end(result);
   assert_ptr_not_equal(begin, end);
 
   parse_t *next = parse_non_terminal_next(result, begin);
@@ -85,10 +85,9 @@ void test_iterator_many(void **state) {
   );
 
   parse_t *result = parse("hello world", grammar);
-  print_parse(result);
 
   parse_t *begin = parse_non_terminal_begin(result);
-  parse_t *end = parse_non_terminal_begin(result);
+  parse_t *end = parse_non_terminal_end(result);
   assert_ptr_not_equal(begin, end);
 
   parse_t *next = parse_non_terminal_next(result, begin);
