@@ -3,6 +3,7 @@
 #ifndef PARSE_TREE_H
 #define PARSE_TREE_H
 
+#include <stdbool.h>
 #include <stddef.h>
 
 /**
@@ -47,6 +48,18 @@ typedef struct parse_st {
    * The number of child nodes this result has.
    */
   size_t n_children;
+
+  /**
+   * Marks whether this node is a terminal or a non-terminal.
+   *
+   * This can't be reliably computed from other properties of the tree - it's
+   * perfectly valid for a non-terminal to be zero-length or have no children
+   * (if it's made up only of predicates, for example). It is better to set the
+   * property explicitly.
+   *
+   * Set to `false` by default by \ref parse_init.
+   */
+  bool terminal;
 } parse_t;
 
 /**
@@ -109,5 +122,37 @@ void print_parse(parse_t *tree);
  * \param tree The parse tree to compute length for
  */
 size_t parse_total_length(parse_t *tree);
+
+/**
+ * Get a pointer to the first non-terminal child node of the given tree.
+ *
+ * If there are no such children, then the returned pointer will be equal to the
+ * end pointer returned by `parse_non_terminal_end`.
+ *
+ * \param tree The parse tree to look for non-terminals in
+ */
+parse_t *parse_non_terminal_begin(parse_t *tree);
+
+/**
+ * Get a pointer to the end of the non-terminal children for the given tree.
+ *
+ * This pointer may not point to allocated memory and as such should never be
+ * dereferenced (only checked for equality with one that has been advanced
+ * through the non-terminals for a tree).
+ *
+ * \param tree The parse tree to look for non-terminals in
+ */
+parse_t *parse_non_terminal_end(parse_t *tree);
+
+/**
+ * Advance a pointer through the non-terminal children of a parse tree.
+ *
+ * If the child tree given is the last one, the return value of this function
+ * will be the same as `parse_non_terminal_end`.
+ *
+ * \param tree The parent tree
+ * \param child The current child pointer to be advanced
+ */
+parse_t *parse_non_terminal_next(parse_t *tree, parse_t *child);
 
 #endif

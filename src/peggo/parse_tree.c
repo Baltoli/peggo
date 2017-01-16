@@ -23,6 +23,8 @@ parse_t *parse_init(char *s, size_t st, size_t len) {
   tree->children = NULL;
   tree->n_children = 0;
 
+  tree->terminal = false;
+
   return tree;
 }
 
@@ -65,7 +67,7 @@ void print_parse_indented(parse_t *tree, int indent) {
 
   print_indents(indent);
 
-  printf("%s [%zu, %zu)\n", tree->symbol, tree->start, tree->start + tree->length);
+  printf("%s [%zu, %zu) %s\n", tree->symbol, tree->start, tree->start + tree->length, tree->terminal?"terminal":"");
   for(size_t i = 0; i < tree->n_children; i++) {
     print_parse_indented(&tree->children[i], indent + 1);
   }
@@ -81,4 +83,23 @@ size_t parse_total_length(parse_t *tree) {
     len += tree->children[i].length;
   }
   return len;
+}
+
+parse_t *parse_non_terminal_begin(parse_t *tree) {
+  return parse_non_terminal_next(tree, tree->children - 1);
+}
+
+parse_t *parse_non_terminal_end(parse_t *tree) {
+  return tree->children + tree->n_children;
+}
+
+parse_t *parse_non_terminal_next(parse_t *tree, parse_t *child) {
+  parse_t *result = child + 1;
+  parse_t *end = parse_non_terminal_end(tree);
+
+  while(result->terminal && result != end) {
+    result++;
+  }
+
+  return result;
 }

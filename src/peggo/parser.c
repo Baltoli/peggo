@@ -76,6 +76,7 @@ parse_t *parse_terminal(char *source, char *symbol, size_t start, parse_t *paren
   strcpy(annotated + len + 1, "'");
 
   parse_t *ret = parse_init(annotated, start, len);
+  ret->terminal = true;
   parse_add_child(parent, ret);
 
   free(annotated);

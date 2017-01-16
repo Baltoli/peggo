@@ -14,7 +14,19 @@ add_executable(parser_unit_tests
 )
 target_link_libraries(parser_unit_tests cmocka peggo)
 
+add_executable(iterator_unit_tests
+  iterator_main.c
+  test_iterators.c
+)
+target_link_libraries(iterator_unit_tests cmocka peggo)
+
+
 add_test(
   NAME "ParserUnitTests"
   COMMAND ${CMAKE_BINARY_DIR}/test/parser_unit_tests
+)
+
+add_test(
+  NAME "IteratorUnitTests"
+  COMMAND ${CMAKE_BINARY_DIR}/test/iterator_unit_tests
 )
