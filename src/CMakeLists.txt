@@ -1,1 +1,1 @@
-add_subdirectory(peggo)
+add_subdirectory(lib)
