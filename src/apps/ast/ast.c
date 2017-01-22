@@ -77,9 +77,9 @@ ast_t *extract(char *src, parse_t *result) {
   } else if(strcmp(sym, "Value") == 0) {
     return extract_value(src, result);
   } else if(strcmp(sym, "Product") == 0) {
-    return extract_product(src, result);
+    return extract_seq(src, result, 0);
   } else if(strcmp(sym, "Sum") == 0) {
-    return extract_sum(src, result);
+    return extract_seq(src, result, 0);
   } else if(strcmp(sym, "Expr") == 0) {
     return extract_expr(src, result);
   }
@@ -107,30 +107,25 @@ ast_t *extract_value(char *src, parse_t *result) {
   return extract(src, parse_non_terminal_begin(result));
 }
 
-ast_t *extract_product(char *src, parse_t *result) {
+ast_t *extract_seq(char *src, parse_t *result, size_t off) {
   size_t ntc = parse_non_terminal_count(result);
   if(ntc == 1) {
     return extract(src, parse_non_terminal_begin(result));
   }
 
   parse_t *left = parse_non_terminal_begin(result);
-  parse_t *op_ty = parse_non_terminal_next(result, left);
-  parse_t *rest = parse_non_terminal_next(result, op_ty);
-
-  return op(extract(src, left), extract_op(src, op_ty), extract(src, rest));
-}
-
-ast_t *extract_sum(char *src, parse_t *result) {
-  size_t ntc = parse_non_terminal_count(result);
-  if(ntc == 1) {
-    return extract(src, parse_non_terminal_begin(result));
+  for(size_t i = 0; i < off; i++) {
+    left = parse_non_terminal_next(result, left);
   }
 
-  parse_t *left = parse_non_terminal_begin(result);
   parse_t *op_ty = parse_non_terminal_next(result, left);
   parse_t *rest = parse_non_terminal_next(result, op_ty);
 
-  return op(extract(src, left), extract_op(src, op_ty), extract(src, rest));
+  if(parse_non_terminal_next(result, rest) == parse_non_terminal_end(result)) {
+    return op(extract(src, left), extract_op(src, op_ty), extract(src, rest));
+  }
+
+  return op(extract(src, left), extract_op(src, op_ty), extract_seq(src, result, off+2));
 }
 
 ast_t *extract_expr(char *src, parse_t *result) {
@@ -169,5 +164,29 @@ void print_ast_indented(ast_t *a, int indents) {
     printf(" ");
     print_ast_indented(a->right, 0);
     printf(")");
+  }
+}
+
+long long eval(ast_t *a) {
+  if(a->type == LEAF) {
+    return a->value;
+  }
+
+  switch(a->op) {
+    case ADD:
+      return eval(a->left) + eval(a->right);
+      break;
+    case SUB:
+      return eval(a->left) - eval(a->right);
+      break;
+    case MUL:
+      return eval(a->left) * eval(a->right);
+      break;
+    case DIV:
+      return eval(a->left) / eval(a->right);
+      break;
+    default:
+      exit(EXIT_FAILURE);
+      break;
   }
 }

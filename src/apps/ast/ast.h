@@ -31,8 +31,9 @@ op_type extract_op(char *src, parse_t *result);
 ast_t *extract(char *src, parse_t *result);
 ast_t *extract_number(char *src, parse_t *result);
 ast_t *extract_value(char *src, parse_t *result);
-ast_t *extract_product(char *src, parse_t *result);
-ast_t *extract_sum(char *src, parse_t *result);
+ast_t *extract_seq(char *src, parse_t *result, size_t off);
 ast_t *extract_expr(char *src, parse_t *result);
+
+long long eval(ast_t *a);
 
 #endif
