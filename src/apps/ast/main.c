@@ -2,10 +2,12 @@
 #include "ast.h"
 #include "peggo.h"
 
+ast_t *parse_extract(char *s, grammar_t *g) {
+  return extract(s, parse(s, g));
+}
+
 int main(void) {
   char *source = "(-4*(1+2)+3)";
-  parse_t *result = parse(source, arith_grammar());
-  ast_t *a = extract(source, result);
-  print_ast(a);
+  print_ast(parse_extract(source, arith_grammar()));
   return 0;
 }
