@@ -85,6 +85,39 @@ size_t parse_total_length(parse_t *tree) {
   return len;
 }
 
+size_t parse_non_terminal_count(parse_t *tree) {
+  size_t count = 0;
+  parse_t *child = parse_non_terminal_begin(tree);
+  
+  while(child != parse_non_terminal_end(tree)) {
+    count++;
+    child = parse_non_terminal_next(tree, child);
+  }
+
+  return count;
+}
+
+parse_t *parse_collect_non_terminals(parse_t *tree) {
+  size_t count = parse_non_terminal_count(tree);
+  if(count == 0) {
+    return NULL;
+  }
+
+  parse_t *buf = malloc(sizeof(*buf) * count);
+  if(!buf) {
+    exit(EXIT_FAILURE);
+  }
+
+  parse_t *child = parse_non_terminal_begin(tree);
+  size_t i = 0;
+  while(child != parse_non_terminal_end(tree)) {
+    buf[i++] = *child;
+    child = parse_non_terminal_next(tree, child);
+  }
+
+  return buf;
+}
+
 parse_t *parse_non_terminal_begin(parse_t *tree) {
   return parse_non_terminal_next(tree, tree->children - 1);
 }

@@ -124,6 +124,26 @@ void print_parse(parse_t *tree);
 size_t parse_total_length(parse_t *tree);
 
 /**
+ * The number of non-terminal children that a parse tree node has.
+ *
+ * \param tree The tree whose children are to be counted
+ */
+size_t parse_non_terminal_count(parse_t *tree);
+
+/**
+ * Find the non-terminal children of a node and collect them into a contiguous
+ * area of memory.
+ *
+ * The memory allocated by this function should be freed directly using `free`
+ * rather than \ref parse_free. The allocated memory will be exactly \ref
+ * parse_non_terminal_count(\p tree) elements in length, unless the length is
+ * 0, in which case `NULL` is returned.
+ *
+ * \param tree The parent node to collect children from
+ */
+parse_t *parse_collect_non_terminals(parse_t *tree);
+
+/**
  * Get a pointer to the first non-terminal child node of the given tree.
  *
  * If there are no such children, then the returned pointer will be equal to the
