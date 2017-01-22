@@ -78,7 +78,7 @@ rule_t *mul_op() {
   return rule_init("MulOp",
       choice(
         terminal("*"),
-        terminal("-")
+        terminal("/")
       ));
 }
 
