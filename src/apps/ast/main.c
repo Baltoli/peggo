@@ -9,8 +9,8 @@ ast_t *parse_extract(char *s, grammar_t *g) {
   return extract(s, parse(s, g));
 }
 
-int main(void) {
-  char *source = "1+2+3+4+5";
+int main(int argc, char **argv) {
+  char *source = argv[1];
   ast_t *a = parse_extract(source, arith_grammar());
   print_ast(a);
   printf("%lld\n", eval(a));
