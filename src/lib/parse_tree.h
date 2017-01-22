@@ -124,6 +124,13 @@ void print_parse(parse_t *tree);
 size_t parse_total_length(parse_t *tree);
 
 /**
+ * The number of non-terminal children that a parse tree node has.
+ *
+ * \param tree The tree whose children are to be counted
+ */
+size_t parse_non_terminal_count(parse_t *tree);
+
+/**
  * Get a pointer to the first non-terminal child node of the given tree.
  *
  * If there are no such children, then the returned pointer will be equal to the

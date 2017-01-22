@@ -97,10 +97,37 @@ void test_iterator_many(void **state) {
   assert_ptr_equal(next, end);
 }
 
+void test_iterator_count(void **state) {
+  rule_t *nested = rule_init(
+    "Nested",
+    terminal("hello")
+  );
+
+  rule_t *start = rule_init(
+    "Start",
+    sequence(
+      non_terminal("Nested"),
+      non_terminal("Nested")
+    )
+  );
+
+  rule_t rules[] = { *nested, *start };
+
+  grammar_t *grammar = grammar_init(
+    non_terminal("Start"),
+    rules, 2
+  );
+
+  parse_t *result = parse("hellohello", grammar);
+
+  assert_int_equal(parse_non_terminal_count(result), 2);
+}
+
 const struct CMUnitTest iterator_tests[] = {
   cmocka_unit_test(test_iterator_none),
   cmocka_unit_test(test_iterator_one),
   cmocka_unit_test(test_iterator_many),
+  cmocka_unit_test(test_iterator_count),
 };
 
 int test_iterators(void) {
