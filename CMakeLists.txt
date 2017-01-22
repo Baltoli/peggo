@@ -15,5 +15,7 @@ mark_as_advanced(VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11")
 
+include_directories(src/lib)
+
 add_subdirectory(src)
 add_subdirectory(docs)
