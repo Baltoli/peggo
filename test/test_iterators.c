@@ -123,11 +123,42 @@ void test_iterator_count(void **state) {
   assert_int_equal(parse_non_terminal_count(result), 2);
 }
 
+void test_iterator_collect(void **state) {
+  rule_t *nested = rule_init(
+    "Nested",
+    terminal("hello")
+  );
+
+  rule_t *start = rule_init(
+    "Start",
+    sequence(
+      non_terminal("Nested"),
+      non_terminal("Nested")
+    )
+  );
+
+  rule_t rules[] = { *nested, *start };
+
+  grammar_t *grammar = grammar_init(
+    non_terminal("Start"),
+    rules, 2
+  );
+
+  parse_t *result = parse("hellohello", grammar);
+  parse_t *children = parse_collect_non_terminals(result);
+
+  assert_string_equal(children[0].symbol, "Nested");
+  assert_string_equal(children[1].symbol, "Nested");
+
+  free(children);
+}
+
 const struct CMUnitTest iterator_tests[] = {
   cmocka_unit_test(test_iterator_none),
   cmocka_unit_test(test_iterator_one),
   cmocka_unit_test(test_iterator_many),
   cmocka_unit_test(test_iterator_count),
+  cmocka_unit_test(test_iterator_collect),
 };
 
 int test_iterators(void) {

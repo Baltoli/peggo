@@ -112,6 +112,7 @@ parse_t *parse_collect_non_terminals(parse_t *tree) {
   size_t i = 0;
   while(child != parse_non_terminal_end(tree)) {
     buf[i++] = *child;
+    child = parse_non_terminal_next(tree, child);
   }
 
   return buf;
