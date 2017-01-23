@@ -22,6 +22,9 @@ The available options that can be passed to CMake are:
 
 * `BUILD_DOCUMENTATION`: if this option is true, then Doxygen can be used to
   build generated documentation for the project with `make doc`.
+* `LOG_LEVEL`: number from 0-4. Higher numbers will cause more log output to be
+  generated, and a value of 0 will disable all logging. Defaults to 0 if not
+  specified.
 
 ### Tests
 
@@ -29,7 +32,7 @@ Currently, tests for the project are implemented using
 [CMocka](https://cmocka.org), which must be installed in order to build the
 test suite. If CMocka is installed, then the tests will be built automatically
 (however, this is optional; if CMocka is not installed, then the project can
-still be built without tests). The test suite can be run with `test/unit_tests`.
+still be built without tests). The test suite can be run with `make test`.
 
 ## Usage
 
