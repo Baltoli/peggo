@@ -1,3 +1,8 @@
+if(NOT LOG_LEVEL)
+  set(LOG_LEVEL 0)
+endif()
+add_definitions(-DDEBUG_LEVEL=${LOG_LEVEL})
+
 add_library(peggo
   expression_construct.c
   expression_print.c
