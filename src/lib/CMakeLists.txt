@@ -6,6 +6,7 @@ add_library(peggo
   parse_tree.c
   common.c
   parser.c
+  log.c
 )
 
 set(headers
