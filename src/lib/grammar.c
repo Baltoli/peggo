@@ -3,11 +3,12 @@
 #include <string.h>
 
 #include "grammar.h"
+#include "log.h"
 
 grammar_t *grammar_init(expr_t *st, rule_t *rs, size_t rc) {
   grammar_t *grammar = malloc(sizeof(*grammar));
   if(!grammar) {
-    exit(EXIT_FAILURE);
+    fatal_error("Could not allocate memory for grammar");
   }
 
   grammar->start = st;

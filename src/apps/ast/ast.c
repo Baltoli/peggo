@@ -4,11 +4,12 @@
 
 #include "ast.h"
 #include "common.h"
+#include "log.h"
 
 ast_t *literal(long long v) {
   ast_t *node = malloc(sizeof(*node));
   if(!node) {
-    exit(EXIT_FAILURE);
+    fatal_error("Could not allocate memory for literal AST node");
   }
 
   node->type = LEAF;
@@ -20,7 +21,7 @@ ast_t *literal(long long v) {
 ast_t *op(ast_t *left, op_type ty, ast_t *right) {
   ast_t *node = malloc(sizeof(*node));
   if(!node) {
-    exit(EXIT_FAILURE);
+    fatal_error("Could not allocate memory for binary op AST node");
   }
 
   node->type = BRANCH;
@@ -186,7 +187,6 @@ long long eval(ast_t *a) {
       return eval(a->left) / eval(a->right);
       break;
     default:
-      exit(EXIT_FAILURE);
-      break;
+      fatal_error("Invalid operation when evaluating AST");
   }
 }

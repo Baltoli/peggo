@@ -4,6 +4,7 @@
 
 #include "parser.h"
 #include "parser_p.h"
+#include "log.h"
 
 static _Thread_local grammar_t *grammar;
 
@@ -46,8 +47,7 @@ parse_t *parse_dispatch(char *source, expr_t *rule, size_t start, parse_t *paren
     case Node_Not:
       return parse_not(source, rule->left, start);
     default:
-      printf("Invalid node in grammar - fatal error\n");
-      exit(EXIT_FAILURE);
+      fatal_error("Invalid node in grammar");
   }
 
   return NULL;
@@ -68,7 +68,7 @@ parse_t *parse_terminal(char *source, char *symbol, size_t start, parse_t *paren
 
   char *annotated = malloc(len + 2);
   if(!annotated) {
-    exit(EXIT_FAILURE);
+    fatal_error("Could not allocate memory for annotated terminal symbol");
   }
 
   strcpy(annotated, "'");
@@ -86,8 +86,7 @@ parse_t *parse_terminal(char *source, char *symbol, size_t start, parse_t *paren
 parse_t *parse_non_terminal(char *source, char *symbol, size_t start, parse_t *parent) {
   rule_t *rule = grammar_production(grammar, symbol);
   if(!rule) {
-    printf("Invalid grammar - no rule for non-terminal %s\n", symbol);
-    exit(EXIT_FAILURE);
+    fatal_error("Invalid grammar - no rule for a non-terminal");
   }
 
   parse_t *this = parse_init(symbol, start, 0);

@@ -13,7 +13,7 @@
  *
  * \param message The message to log
  */
-void fatal_error(char *message);
+void fatal_error(char *message) __attribute__((noreturn));
 
 /**
  * Log a message to `stderr` at the given level. If the level is greater than
