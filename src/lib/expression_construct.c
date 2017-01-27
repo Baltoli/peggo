@@ -2,11 +2,12 @@
 #include <string.h>
 
 #include "expression.h"
+#include "log.h"
 
 expr_t *expr_init(expr_node_t type) {
   expr_t *node = malloc(sizeof(*node));
   if(!node) {
-    exit(EXIT_FAILURE);
+    fatal_error("Could not allocate memory for parsing expression");
   }
 
   node->type = type;
@@ -41,7 +42,7 @@ void init_data(expr_t *node, const char *s) {
 
   node->data = malloc(strlen(s) + 1);
   if(!node->data) {
-    exit(EXIT_FAILURE);
+    fatal_error("Could not allocate memory for parsing expression symbol");
   }
 
   strcpy(node->data, s);

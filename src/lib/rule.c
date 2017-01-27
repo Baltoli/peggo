@@ -3,16 +3,17 @@
 #include <string.h>
 
 #include "rule.h"
+#include "log.h"
 
 rule_t *rule_init(char *sym, expr_t *expr) {
   rule_t *rule = malloc(sizeof(rule_t));
   if(!rule) {
-    exit(EXIT_FAILURE);
+    fatal_error("Could not allocate memory for rule");
   }
 
   rule->symbol = malloc(strlen(sym) + 1);
   if(!rule->symbol) {
-    exit(EXIT_FAILURE);
+    fatal_error("Could not allocate memory for rule symbol");
   }
 
   strcpy(rule->symbol, sym);

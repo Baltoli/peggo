@@ -19,7 +19,7 @@ char *level_to_string(unsigned int level) {
 }
 
 void fatal_error(char *message) {
-  fprintf(stderr, "libpeggo fatal error: %s\n", message);
+  fprintf(stderr, "[libpeggo FATAL]: %s\n", message);
   exit(EXIT_FAILURE);
 }
 

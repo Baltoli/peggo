@@ -4,16 +4,17 @@
 
 #include "common.h"
 #include "parse_tree.h"
+#include "log.h"
 
 parse_t *parse_init(char *s, size_t st, size_t len) {
   parse_t *tree = malloc(sizeof(parse_t));
   if(!tree) {
-    exit(EXIT_FAILURE);
+    fatal_error("Could not allocate memory for parse tree");
   }
 
   tree->symbol = malloc(strlen(s) + 1); 
   if(!tree->symbol) {
-    exit(EXIT_FAILURE);
+    fatal_error("Could not allocate memory for parse tree symbol");
   }
   strcpy(tree->symbol, s);
 
@@ -52,7 +53,7 @@ void parse_add_child(parse_t *tree, parse_t *child) {
   }
 
   if(!tree->children) {
-    exit(EXIT_FAILURE);
+    fatal_error("Parse tree child pointer is not initialised");
   }
 
   tree->children[tree->n_children] = *child;
@@ -105,7 +106,7 @@ parse_t *parse_collect_non_terminals(parse_t *tree) {
 
   parse_t *buf = malloc(sizeof(*buf) * count);
   if(!buf) {
-    exit(EXIT_FAILURE);
+    fatal_error("Could not allocate memory for non-terminal collection buffer");
   }
 
   parse_t *child = parse_non_terminal_begin(tree);
