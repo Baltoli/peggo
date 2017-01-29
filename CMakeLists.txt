@@ -14,6 +14,7 @@ set(VERSION_PATCH 0)
 mark_as_advanced(VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic")
 
 include_directories(src/lib)
 
