@@ -66,7 +66,7 @@ parse_t *parse_terminal(char *source, char *symbol, size_t start, parse_t *paren
     }
   }
 
-  char *annotated = malloc(len + 2);
+  char *annotated = malloc(len + 3);
   if(!annotated) {
     fatal_error("Could not allocate memory for annotated terminal symbol");
   }

@@ -5,8 +5,13 @@
 #include "peggo.h"
 
 ast_t *parse_extract(char *s, grammar_t *g) {
-  print_parse(parse(s, g));
-  return extract(s, parse(s, g));
+  parse_t *result = parse(s, g);
+
+  print_parse(result);
+  ast_t *a = extract(s, result);
+  
+  parse_free(result);
+  return a;
 }
 
 int main(int argc, char **argv) {
