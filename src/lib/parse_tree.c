@@ -131,7 +131,7 @@ parse_t *parse_non_terminal_next(parse_t *tree, parse_t *child) {
   parse_t *result = child + 1;
   parse_t *end = parse_non_terminal_end(tree);
 
-  while(result->terminal && result != end) {
+  while(result != end && result->terminal) {
     result++;
   }
 
