@@ -12,13 +12,13 @@ add_executable(parser_unit_tests
   test_parser_and.c
   test_parser_not.c
 )
-target_link_libraries(parser_unit_tests cmocka peggo)
+target_link_libraries(parser_unit_tests ${CMOCKA_LIBRARY} peggo)
 
 add_executable(iterator_unit_tests
   iterator_main.c
   test_iterators.c
 )
-target_link_libraries(iterator_unit_tests cmocka peggo)
+target_link_libraries(iterator_unit_tests ${CMOCKA_LIBRARY} peggo)
 
 
 add_test(
