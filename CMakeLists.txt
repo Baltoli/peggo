@@ -3,7 +3,6 @@ project(Peggo)
 
 find_package(cmocka)
 if(${cmocka_FOUND})
-  message(STATUS ${CMOCKA_INCLUDE_DIR})
   include_directories(${CMOCKA_INCLUDE_DIR})
   enable_testing()
   message(STATUS "Found cmocka, enabling unit tests")
