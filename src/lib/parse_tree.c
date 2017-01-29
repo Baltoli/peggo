@@ -29,7 +29,7 @@ parse_t *parse_init(char *s, size_t st, size_t len) {
   return tree;
 }
 
-void parse_free(parse_t *tree) {
+void parse_free_child(parse_t *tree) {
   if(!tree) {
     return;
   }
@@ -37,8 +37,14 @@ void parse_free(parse_t *tree) {
   free(tree->symbol);  
 
   for(size_t i = 0; i < tree->n_children; i++) {
-    parse_free(&tree->children[i]);
+    parse_free_child(&tree->children[i]);
   }
+  free(tree->children);
+}
+
+void parse_free(parse_t *tree) {
+  parse_free_child(tree);
+  free(tree);
 }
 
 void parse_add_child(parse_t *tree, parse_t *child) {
