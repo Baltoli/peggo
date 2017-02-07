@@ -39,6 +39,12 @@ rule_t *rule_init(char *sym, expr_t *expr);
  */
 void rule_free(rule_t *rule);
 
+void rule_free_unowned(rule_t *rule);
+
+rule_t *rule_collect(size_t count, ...);
+
+void rule_collect_free(size_t count, rule_t *rules);
+
 /**
  * Pretty-print a production rule to `STDOUT`.
  *
