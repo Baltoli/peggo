@@ -3,19 +3,11 @@
 #include "arith_grammar.h"
 
 grammar_t *arith_grammar() {
-  rule_t *rules = malloc(sizeof(*rules) * 9);
-
-  rules[0] = *digit();
-  rules[1] = *sign();
-  rules[2] = *number();
-  rules[3] = *value();
-
-  rules[4] = *add_op();
-  rules[5] = *mul_op();
-
-  rules[6] = *product();
-  rules[7] = *sum();
-  rules[8] = *expr();
+  rule_t *rules = rule_collect(9,
+    digit, sign, number, value,
+    add_op, mul_op,
+    product, sum, expr
+  );
 
   return grammar_init(
       non_terminal("Expr"),

@@ -3,9 +3,21 @@
 #ifndef LOG_H
 #define LOG_H
 
+#include <stdio.h>
+
 #ifndef DEBUG_LEVEL
 #define DEBUG_LEVEL 4
 #endif
+
+/**
+ * Redirect logging to another file.
+ *
+ * Logs are sent to `stdout` by default, but they can be sent to any open file
+ * by using this method.
+ *
+ * \param f The file to log to.
+ */
+void log_redirect(FILE *f);
 
 /**
  * Logs a message to `stderr`, then exits the program with a nonzero return

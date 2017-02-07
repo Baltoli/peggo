@@ -3,6 +3,20 @@
 
 #include "log.h"
 
+FILE *log_file = NULL;
+
+FILE *get_log_file() {
+  if(log_file) {
+    return log_file;
+  }
+
+  return stderr;
+}
+
+void log_redirect(FILE *f) {
+  log_file = f;
+}
+
 char *level_to_string(unsigned int level) {
   switch(level) {
     case 1:
@@ -19,12 +33,12 @@ char *level_to_string(unsigned int level) {
 }
 
 void fatal_error(char *message) {
-  fprintf(stderr, "[libpeggo FATAL]: %s\n", message);
+  fprintf(get_log_file(), "[libpeggo FATAL]: %s\n", message);
   exit(EXIT_FAILURE);
 }
 
 void log_level(unsigned int level, char *message) {
   if(level <= DEBUG_LEVEL) {
-    fprintf(stderr, "libpeggo [%s]: %s\n", level_to_string(level), message);
+    fprintf(get_log_file(), "libpeggo [%s]: %s\n", level_to_string(level), message);
   }
 }
