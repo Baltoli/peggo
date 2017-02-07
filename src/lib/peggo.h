@@ -6,5 +6,6 @@
 #include "grammar.h"
 #include "rule.h"
 #include "parse_tree.h"
+#include "primitives.h"
 
 #endif
