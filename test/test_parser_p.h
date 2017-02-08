@@ -40,4 +40,10 @@ void and_true(void **state);
 void not_true(void **state);
 void not_false(void **state);
 
+void sep_by_zero(void **state);
+void sep_by_one(void **state);
+void sep_by_many(void **state);
+
+void sep_by_fail(void **state);
+
 #endif
