@@ -123,3 +123,5 @@ Session.vim
 tags
 
 Build/
+
+compile_commands.json
