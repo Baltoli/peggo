@@ -16,4 +16,12 @@
  */
 expr_t *sep_by(expr_t *expr, expr_t *sep);
 
+/**
+ * Parse whitespace that does not extend over a line boundary.
+ *
+ * This expression matches zero or more spaces or tabs, but will not match line
+ * separators like '\n'.
+ */
+expr_t *whitespace();
+
 #endif
