@@ -8,6 +8,70 @@
 
 static _Thread_local grammar_t *grammar;
 
+parse_error_t *parse_error_init(char *message) {
+  parse_error_t *err = malloc(sizeof(*err));
+  if(!err) {
+    fatal_error("Could not allocate memory for parse error");
+  }
+  
+  err->message = malloc(strlen(message) + 1);
+  if(!err->message) {
+    fatal_error("Could not allocate memory for parse error message");
+  }
+  strcpy(err->message, message);
+  
+  return err;
+}
+
+void parse_error_free(parse_error_t *err) {
+  if(!err) {
+    return;
+  }
+
+  free(err->message);
+  free(err);
+}
+
+parse_result_t *parse_result_init() {
+  parse_result_t *res = malloc(sizeof(*res));
+  if(!res) {
+    fatal_error("Could not allocate memory for parse result");
+  }
+
+  return res;
+}
+
+parse_result_t *make_result(parse_t *result) {
+  parse_result_t *res = parse_result_init();
+  res->data.result = result;
+  res->data_kind = RESULT;
+  return res;
+}
+
+parse_result_t *make_error(parse_error_t *error) {
+  parse_result_t *res = parse_result_init();
+  res->data.error = error;
+  res->data_kind = ERROR;
+  return res;
+}
+
+void parse_result_free(parse_result_t *result) {
+  if(!result) {
+    return;
+  }
+
+  switch(result->data_kind) {
+    case RESULT:
+      parse_free(result->data.result);
+      break;
+    case ERROR:
+      parse_error_free(result->data.error);
+      break;
+  }
+
+  free(result);
+}
+
 parse_t *parse(char *source, grammar_t *gram) {
   grammar = gram;
 
