@@ -46,4 +46,10 @@ void sep_by_many(void **state);
 
 void sep_by_fail(void **state);
 
+void whitespace_none(void **state);
+void whitespace_spaces(void **state);
+void whitespace_tabs(void **state);
+void whitespace_mixed(void **state);
+void whitespace_newlines(void **state);
+
 #endif

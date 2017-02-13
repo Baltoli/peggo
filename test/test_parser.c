@@ -52,6 +52,12 @@ const struct CMUnitTest parser_tests[] = {
   cmocka_unit_test(sep_by_one),
   cmocka_unit_test(sep_by_many),
   cmocka_unit_test(sep_by_fail),
+
+  cmocka_unit_test(whitespace_none),
+  cmocka_unit_test(whitespace_spaces),
+  cmocka_unit_test(whitespace_tabs),
+  cmocka_unit_test(whitespace_mixed),
+  cmocka_unit_test(whitespace_newlines),
 };
 
 int test_parser(void) {

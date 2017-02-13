@@ -11,7 +11,6 @@ expr_t *sep_by(expr_t *e, expr_t *s) {
   );
 }
 
-
 expr_t *whitespace() {
   return zero_or_more(
     choice(
