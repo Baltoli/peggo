@@ -24,4 +24,16 @@ expr_t *sep_by(expr_t *expr, expr_t *sep);
  */
 expr_t *whitespace();
 
+/**
+ * Parse an expression that is wrapped inside a pair of outer expressions.
+ *
+ * An example of this could be an expression wrapped in parentheses. This
+ * expression will match exactly one left, one inner, then one right.
+ *
+ * \param left The left-hand expression
+ * \param inner The inner expression
+ * \param right The right-hand expression
+ */
+expr_t *wrapped(expr_t *left, expr_t *inner, expr_t *right);
+
 #endif

@@ -19,3 +19,13 @@ expr_t *whitespace() {
     )
   );
 }
+
+expr_t *wrapped(expr_t *left, expr_t *inner, expr_t *right) {
+  return sequence(
+    sequence(
+      left,
+      inner
+    ),
+    right
+  );
+}

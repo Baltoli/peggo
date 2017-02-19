@@ -58,6 +58,11 @@ const struct CMUnitTest parser_tests[] = {
   cmocka_unit_test(whitespace_tabs),
   cmocka_unit_test(whitespace_mixed),
   cmocka_unit_test(whitespace_newlines),
+
+  cmocka_unit_test(wrapped_no_end),
+  cmocka_unit_test(wrapped_no_start),
+  cmocka_unit_test(wrapped_no_inner),
+  cmocka_unit_test(wrapped_success),
 };
 
 int test_parser(void) {

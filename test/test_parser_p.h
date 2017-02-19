@@ -52,4 +52,9 @@ void whitespace_tabs(void **state);
 void whitespace_mixed(void **state);
 void whitespace_newlines(void **state);
 
+void wrapped_no_end(void **state);
+void wrapped_no_start(void **state);
+void wrapped_no_inner(void **state);
+void wrapped_success(void **state);
+
 #endif
