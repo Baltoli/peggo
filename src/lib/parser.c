@@ -256,6 +256,10 @@ parse_result_t *parse_one_or_more(char *source, expr_t *expr, size_t start, pars
     prev->data.result->length = offset - start;
   }
 
+  if(!prev) {
+    return result;
+  }
+
   return prev;
 }
 
