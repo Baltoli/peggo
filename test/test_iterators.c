@@ -20,9 +20,13 @@ void test_iterator_none(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("hello", grammar);
-  parse_t *begin = parse_non_terminal_begin(result);
-  parse_t *end = parse_non_terminal_end(result);
+  parse_result_t *result = parse("hello", grammar);
+  assert_non_null(result);
+  assert_true(is_success(result));
+
+  parse_t *suc = result->data.result;
+  parse_t *begin = parse_non_terminal_begin(suc);
+  parse_t *end = parse_non_terminal_end(suc);
 
   assert_ptr_equal(begin, end);
 }
@@ -45,13 +49,16 @@ void test_iterator_one(void **state) {
     rules, 2
   );
 
-  parse_t *result = parse("hello", grammar);
+  parse_result_t *result = parse("hello", grammar);
+  assert_non_null(result);
+  assert_true(is_success(result));
 
-  parse_t *begin = parse_non_terminal_begin(result);
-  parse_t *end = parse_non_terminal_end(result);
+  parse_t *suc = result->data.result;
+  parse_t *begin = parse_non_terminal_begin(suc);
+  parse_t *end = parse_non_terminal_end(suc);
   assert_ptr_not_equal(begin, end);
 
-  parse_t *next = parse_non_terminal_next(result, begin);
+  parse_t *next = parse_non_terminal_next(suc, begin);
   assert_ptr_equal(next, end);
 }
 
@@ -84,16 +91,19 @@ void test_iterator_many(void **state) {
     rules, 4
   );
 
-  parse_t *result = parse("hello world", grammar);
+  parse_result_t *result = parse("hello world", grammar);
+  assert_non_null(result);
+  assert_true(is_success(result));
 
-  parse_t *begin = parse_non_terminal_begin(result);
-  parse_t *end = parse_non_terminal_end(result);
+  parse_t *suc = result->data.result;
+  parse_t *begin = parse_non_terminal_begin(suc);
+  parse_t *end = parse_non_terminal_end(suc);
   assert_ptr_not_equal(begin, end);
 
-  parse_t *next = parse_non_terminal_next(result, begin);
+  parse_t *next = parse_non_terminal_next(suc, begin);
   assert_ptr_not_equal(next, end);
 
-  next = parse_non_terminal_next(result, next);
+  next = parse_non_terminal_next(suc, next);
   assert_ptr_equal(next, end);
 }
 
@@ -118,9 +128,11 @@ void test_iterator_count(void **state) {
     rules, 2
   );
 
-  parse_t *result = parse("hellohello", grammar);
+  parse_result_t *result = parse("hellohello", grammar);
+  assert_non_null(result);
+  assert_true(is_success(result));
 
-  assert_int_equal(parse_non_terminal_count(result), 2);
+  assert_int_equal(parse_non_terminal_count(result->data.result), 2);
 }
 
 void test_iterator_collect(void **state) {
@@ -144,8 +156,12 @@ void test_iterator_collect(void **state) {
     rules, 2
   );
 
-  parse_t *result = parse("hellohello", grammar);
-  parse_t *children = parse_collect_non_terminals(result);
+  parse_result_t *result = parse("hellohello", grammar);
+  assert_non_null(result);
+  assert_true(is_success(result));
+
+  parse_t *suc = result->data.result;
+  parse_t *children = parse_collect_non_terminals(suc);
 
   assert_string_equal(children[0].symbol, "Nested");
   assert_string_equal(children[1].symbol, "Nested");
