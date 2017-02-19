@@ -11,10 +11,13 @@ void optional_some(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("opt", grammar);
+  parse_result_t *result = parse("opt", grammar);
   assert_non_null(result);
-  assert_int_equal(result->length, 3);
-  assert_int_equal(result->n_children, 1);
+  assert_true(is_success(result));
+
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->length, 3);
+  assert_int_equal(suc->n_children, 1);
 }
 
 void optional_none(void **state) {
@@ -28,8 +31,11 @@ void optional_none(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("nope", grammar);
+  parse_result_t *result = parse("nope", grammar);
   assert_non_null(result);
-  assert_int_equal(result->length, 0);
-  assert_int_equal(result->n_children, 0);
+  assert_true(is_success(result));
+
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->length, 0);
+  assert_int_equal(suc->n_children, 0);
 }
