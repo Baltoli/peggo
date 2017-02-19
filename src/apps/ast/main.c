@@ -2,16 +2,22 @@
 
 #include "arith_grammar.h"
 #include "ast.h"
+#include "log.h"
 #include "peggo.h"
 
 ast_t *parse_extract(char *s, grammar_t *g) {
-  parse_t *result = parse(s, g);
+  parse_result_t *result = parse(s, g);
 
-  print_parse(result);
-  ast_t *a = extract(s, result);
+  if(is_success(result)) {
+    print_parse(result->data.result);
+
+    ast_t *a = extract(s, result->data.result);
+    parse_result_free(result);
+    return a;
+  } else {
+    fatal_error(result->data.error->message);
+  }
   
-  parse_free(result);
-  return a;
 }
 
 int main(int argc, char **argv) {
