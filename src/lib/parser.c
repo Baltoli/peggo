@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -42,6 +43,8 @@ parse_result_t *parse_result_init() {
 }
 
 parse_result_t *make_result(parse_t *result) {
+  assert(result && "Can't make_result from NULL");
+
   parse_result_t *res = parse_result_init();
   res->data.result = result;
   res->data_kind = RESULT;
@@ -49,6 +52,8 @@ parse_result_t *make_result(parse_t *result) {
 }
 
 parse_result_t *make_error(parse_error_t *error) {
+  assert(error && "Can't make_error from NULL");
+
   parse_result_t *res = parse_result_init();
   res->data.error = error;
   res->data_kind = ERROR;
