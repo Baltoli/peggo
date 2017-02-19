@@ -12,16 +12,18 @@ void non_terminal_success(void **state) {
     non_terminal("Start"),
     rules, 2);
 
-  parse_t *result = parse("hello world", grammar);
+  parse_result_t *result = parse("hello world", grammar);
   assert_non_null(result);
+  assert_true(is_success(result));
 
-  assert_int_equal(result->length, 11);
-  assert_int_equal(result->n_children, 1);
-  assert_string_equal(result->symbol, "Start");
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->length, 11);
+  assert_int_equal(suc->n_children, 1);
+  assert_string_equal(suc->symbol, "Start");
 
-  assert_int_equal(result->children[0].length, 11);
-  assert_int_equal(result->children[0].n_children, 1);
-  assert_string_equal(result->children[0].symbol, "NonTerm");
+  assert_int_equal(suc->children[0].length, 11);
+  assert_int_equal(suc->children[0].n_children, 1);
+  assert_string_equal(suc->children[0].symbol, "NonTerm");
 }
 
 void non_terminal_failure(void **state) {
@@ -36,6 +38,7 @@ void non_terminal_failure(void **state) {
     non_terminal("Start"),
     rules, 2);
 
-  parse_t *result = parse("nope", grammar);
-  assert_null(result);
+  parse_result_t *result = parse("nope", grammar);
+  assert_non_null(result);
+  assert_true(is_error(result));
 }

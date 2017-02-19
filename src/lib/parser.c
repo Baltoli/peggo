@@ -102,7 +102,7 @@ parse_result_t *parse_dispatch(char *source, expr_t *rule, size_t start, parse_r
     return make_error(parse_error_init("No parsing rule specified!"));
   }
 
-  if(is_error(parent)) {
+  if(parent && is_error(parent)) {
     return parent;
   }
 
@@ -176,7 +176,10 @@ parse_result_t *parse_non_terminal(char *source, char *symbol, size_t start, par
 
   this->length = parse_total_length(this);
   
-  parse_add_child(parent->data.result, this);
+  if(parent) {
+    parse_add_child(parent->data.result, this);
+  }
+
   return make_result(this);
 }
 
