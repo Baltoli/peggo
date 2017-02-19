@@ -10,12 +10,14 @@ void sep_by_zero(void **state) {
       )
     ), 1);
 
-  parse_t *result = parse("", grammar);
+  parse_result_t *result = parse("", grammar);
   assert_non_null(result);
+  assert_true(is_success(result));
 
-  assert_int_equal(result->length, 0);
-  assert_int_equal(result->n_children, 0);
-  assert_string_equal(result->symbol, "Start");
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->length, 0);
+  assert_int_equal(suc->n_children, 0);
+  assert_string_equal(suc->symbol, "Start");
 }
 
 void sep_by_one(void **state) {
@@ -28,14 +30,16 @@ void sep_by_one(void **state) {
       )
     ), 1);
 
-  parse_t *result = parse("hello", grammar);
+  parse_result_t *result = parse("hello", grammar);
   assert_non_null(result);
+  assert_true(is_success(result));
 
-  assert_int_equal(result->length, 5);
-  assert_int_equal(result->n_children, 1);
-  assert_string_equal(result->symbol, "Start");
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->length, 5);
+  assert_int_equal(suc->n_children, 1);
+  assert_string_equal(suc->symbol, "Start");
 
-  assert_int_equal(result->children[0].length, 5);
+  assert_int_equal(suc->children[0].length, 5);
 }
 
 void sep_by_many(void **state) {
@@ -48,18 +52,20 @@ void sep_by_many(void **state) {
       )
     ), 1);
 
-  parse_t *result = parse("hello,hello,hello", grammar);
+  parse_result_t *result = parse("hello,hello,hello", grammar);
   assert_non_null(result);
+  assert_true(is_success(result));
 
-  assert_int_equal(result->length, 17);
-  assert_int_equal(result->n_children, 5);
-  assert_string_equal(result->symbol, "Start");
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->length, 17);
+  assert_int_equal(suc->n_children, 5);
+  assert_string_equal(suc->symbol, "Start");
 
-  assert_int_equal(result->children[0].length, 5);
-  assert_int_equal(result->children[1].length, 1);
-  assert_int_equal(result->children[2].length, 5);
-  assert_int_equal(result->children[3].length, 1);
-  assert_int_equal(result->children[4].length, 5);
+  assert_int_equal(suc->children[0].length, 5);
+  assert_int_equal(suc->children[1].length, 1);
+  assert_int_equal(suc->children[2].length, 5);
+  assert_int_equal(suc->children[3].length, 1);
+  assert_int_equal(suc->children[4].length, 5);
 }
 
 void sep_by_fail(void **state) {
@@ -72,14 +78,16 @@ void sep_by_fail(void **state) {
       )
     ), 1);
 
-  parse_t *result = parse("hello,hello hello", grammar);
+  parse_result_t *result = parse("hello,hello hello", grammar);
   assert_non_null(result);
+  assert_true(is_success(result));
 
-  assert_int_equal(result->length, 11);
-  assert_int_equal(result->n_children, 3);
-  assert_string_equal(result->symbol, "Start");
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->length, 11);
+  assert_int_equal(suc->n_children, 3);
+  assert_string_equal(suc->symbol, "Start");
 
-  assert_int_equal(result->children[0].length, 5);
-  assert_int_equal(result->children[1].length, 1);
-  assert_int_equal(result->children[2].length, 5);
+  assert_int_equal(suc->children[0].length, 5);
+  assert_int_equal(suc->children[1].length, 1);
+  assert_int_equal(suc->children[2].length, 5);
 }
