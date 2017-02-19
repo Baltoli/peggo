@@ -72,6 +72,14 @@ void parse_result_free(parse_result_t *result) {
   free(result);
 }
 
+bool is_error(parse_result_t *result) {
+  return result->data_kind == ERROR;
+}
+
+bool is_success(parse_result_t *result) {
+  return result->data_kind == RESULT;
+}
+
 parse_t *parse(char *source, grammar_t *gram) {
   grammar = gram;
 
