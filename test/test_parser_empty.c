@@ -5,8 +5,10 @@ void empty_success(void **state) {
     non_terminal("Start"),
     rule_init("Start", empty()), 1);
 
-  parse_t *result = parse("hello", grammar);
+  parse_result_t *result = parse("hello", grammar);
   assert_non_null(result);
-  assert_int_equal(result->length, 0);
-  assert_int_equal(result->n_children, 0);
+
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->length, 0);
+  assert_int_equal(suc->n_children, 0);
 }
