@@ -156,7 +156,10 @@ parse_result_t *parse_terminal(char *source, char *symbol, size_t start, parse_r
 
   parse_t *ret = parse_init(annotated, start, len);
   ret->terminal = true;
-  parse_add_child(parent->data.result, ret);
+  
+  if(parent) {
+    parse_add_child(parent->data.result, ret);
+  }
 
   free(annotated);
   return make_result(ret);
