@@ -12,6 +12,7 @@ add_library(peggo
   common.c
   parser.c
   log.c
+  primitives.c
 )
 
 set(headers
@@ -21,6 +22,7 @@ set(headers
   rule.h
   grammar.h
   peggo.h
+  primitives.h
 )
 set_target_properties(peggo
   PROPERTIES PUBLIC_HEADER "${headers}"

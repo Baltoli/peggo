@@ -11,6 +11,9 @@ add_executable(parser_unit_tests
   test_parser_optional.c
   test_parser_and.c
   test_parser_not.c
+  test_parser_sep_by.c
+  test_parser_whitespace.c
+  test_parser_wrapped.c
 )
 target_link_libraries(parser_unit_tests ${CMOCKA_LIBRARY} peggo)
 

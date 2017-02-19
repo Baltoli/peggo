@@ -40,4 +40,21 @@ void and_true(void **state);
 void not_true(void **state);
 void not_false(void **state);
 
+void sep_by_zero(void **state);
+void sep_by_one(void **state);
+void sep_by_many(void **state);
+
+void sep_by_fail(void **state);
+
+void whitespace_none(void **state);
+void whitespace_spaces(void **state);
+void whitespace_tabs(void **state);
+void whitespace_mixed(void **state);
+void whitespace_newlines(void **state);
+
+void wrapped_no_end(void **state);
+void wrapped_no_start(void **state);
+void wrapped_no_inner(void **state);
+void wrapped_success(void **state);
+
 #endif

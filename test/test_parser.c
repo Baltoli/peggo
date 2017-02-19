@@ -47,6 +47,22 @@ const struct CMUnitTest parser_tests[] = {
 
   cmocka_unit_test(not_true),
   cmocka_unit_test(not_false),
+
+  cmocka_unit_test(sep_by_zero),
+  cmocka_unit_test(sep_by_one),
+  cmocka_unit_test(sep_by_many),
+  cmocka_unit_test(sep_by_fail),
+
+  cmocka_unit_test(whitespace_none),
+  cmocka_unit_test(whitespace_spaces),
+  cmocka_unit_test(whitespace_tabs),
+  cmocka_unit_test(whitespace_mixed),
+  cmocka_unit_test(whitespace_newlines),
+
+  cmocka_unit_test(wrapped_no_end),
+  cmocka_unit_test(wrapped_no_start),
+  cmocka_unit_test(wrapped_no_inner),
+  cmocka_unit_test(wrapped_success),
 };
 
 int test_parser(void) {

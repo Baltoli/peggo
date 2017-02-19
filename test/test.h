@@ -5,6 +5,6 @@
 #include <stddef.h>
 #include <setjmp.h>
 #include <cmocka.h>
-#include "../src/lib/parser.h"
+#include "../src/lib/peggo.h"
 
 #endif
