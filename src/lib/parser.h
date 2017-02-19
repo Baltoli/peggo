@@ -122,6 +122,6 @@ bool is_success(parse_result_t *result);
  * \param source A source text to be parsed
  * \param grammar The grammar with which to parse the source
  */
-parse_t *parse(char *source, grammar_t *grammar);
+parse_result_t *parse(char *source, grammar_t *grammar);
 
 #endif
