@@ -13,8 +13,9 @@ void wrapped_no_end(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("[hello", grammar);
-  assert_null(result);
+  parse_result_t *result = parse("[hello", grammar);
+  assert_non_null(result);
+  assert_true(is_error(result));
 }
 
 void wrapped_no_start(void **state) {
@@ -30,8 +31,9 @@ void wrapped_no_start(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("hello]", grammar);
-  assert_null(result);
+  parse_result_t *result = parse("hello]", grammar);
+  assert_non_null(result);
+  assert_true(is_error(result));
 }
 
 void wrapped_no_inner(void **state) {
@@ -47,8 +49,9 @@ void wrapped_no_inner(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("[yo]", grammar);
-  assert_null(result);
+  parse_result_t *result = parse("[yo]", grammar);
+  assert_non_null(result);
+  assert_true(is_error(result));
 }
 
 void wrapped_success(void **state) {
@@ -64,9 +67,11 @@ void wrapped_success(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("[hello]", grammar);
+  parse_result_t *result = parse("[hello]", grammar);
   assert_non_null(result);
+  assert_true(is_success(result));
 
-  assert_int_equal(result->n_children, 3);
-  assert_int_equal(result->length, 7);
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->n_children, 3);
+  assert_int_equal(suc->length, 7);
 }
