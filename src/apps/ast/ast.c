@@ -50,8 +50,6 @@ op_type extract_op(char *src, parse_t *result) {
     return INVALID;
   }
 
-  char *sym = result->symbol;
-
   switch(*(src+result->start)) {
     case '+':
       return ADD;

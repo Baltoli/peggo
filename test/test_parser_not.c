@@ -12,9 +12,11 @@ void not_true(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("help", grammar);
+  parse_result_t *result = parse("help", grammar);
   assert_non_null(result);
-  assert_int_equal(result->length, 3);
+  assert_true(is_success(result));
+
+  assert_int_equal(result->data.result->length, 3);
 }
 
 void not_false(void **state) {
@@ -29,6 +31,8 @@ void not_false(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("hello", grammar);
-  assert_null(result);
+  parse_result_t *result = parse("hello", grammar);
+
+  assert_non_null(result);
+  assert_true(is_error(result));
 }

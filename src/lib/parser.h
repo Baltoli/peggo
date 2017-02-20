@@ -96,6 +96,20 @@ parse_result_t *make_error(parse_error_t *error);
 void parse_result_free(parse_result_t *result);
 
 /**
+ * Returns true if a result is an error value.
+ *
+ * \param result The result to check
+ */
+bool is_error(parse_result_t *result);
+
+/**
+ * Returns true if a result is a success value.
+ *
+ * \param result The result to check
+ */
+bool is_success(parse_result_t *result);
+
+/**
  * Parse a string using a PEG grammar.
  *
  * This function is **not** thread safe, as \p grammar is stored in a global
@@ -108,6 +122,6 @@ void parse_result_free(parse_result_t *result);
  * \param source A source text to be parsed
  * \param grammar The grammar with which to parse the source
  */
-parse_t *parse(char *source, grammar_t *grammar);
+parse_result_t *parse(char *source, grammar_t *grammar);
 
 #endif

@@ -11,11 +11,13 @@ void one_or_more_one(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("11", grammar);
+  parse_result_t *result = parse("11", grammar);
   assert_non_null(result);
+  assert_true(is_success(result));
 
-  assert_int_equal(result->length, 2);
-  assert_int_equal(result->n_children, 1);
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->length, 2);
+  assert_int_equal(suc->n_children, 1);
 }
 
 void one_or_more_many(void **state) {
@@ -29,11 +31,13 @@ void one_or_more_many(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("1111111", grammar);
+  parse_result_t *result = parse("1111111", grammar);
   assert_non_null(result);
+  assert_true(is_success(result));
 
-  assert_int_equal(result->length, 6);
-  assert_int_equal(result->n_children, 3);
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->length, 6);
+  assert_int_equal(suc->n_children, 3);
 }
 
 void one_or_more_failure(void **state) {
@@ -47,6 +51,7 @@ void one_or_more_failure(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("1", grammar);
-  assert_null(result);
+  parse_result_t *result = parse("1", grammar);
+  assert_non_null(result);
+  assert_true(is_error(result));
 }

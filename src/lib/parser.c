@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -42,6 +43,8 @@ parse_result_t *parse_result_init() {
 }
 
 parse_result_t *make_result(parse_t *result) {
+  assert(result && "Can't make_result from NULL");
+
   parse_result_t *res = parse_result_init();
   res->data.result = result;
   res->data_kind = RESULT;
@@ -49,6 +52,8 @@ parse_result_t *make_result(parse_t *result) {
 }
 
 parse_result_t *make_error(parse_error_t *error) {
+  assert(error && "Can't make_error from NULL");
+
   parse_result_t *res = parse_result_init();
   res->data.error = error;
   res->data_kind = ERROR;
@@ -72,21 +77,33 @@ void parse_result_free(parse_result_t *result) {
   free(result);
 }
 
-parse_t *parse(char *source, grammar_t *gram) {
+bool is_error(parse_result_t *result) {
+  return result->data_kind == ERROR;
+}
+
+bool is_success(parse_result_t *result) {
+  return result->data_kind == RESULT;
+}
+
+parse_result_t *parse(char *source, grammar_t *gram) {
   grammar = gram;
 
-  parse_t *parent = parse_dispatch(source, gram->start, 0, NULL);
-  if(!parent) {
-    return NULL;
+  parse_result_t *parent = parse_dispatch(source, gram->start, 0, NULL);
+
+  if(is_success(parent)) {
+    parent->data.result->length = parse_total_length(parent->data.result);
   }
 
-  parent->length = parse_total_length(parent);
   return parent;
 }
 
-parse_t *parse_dispatch(char *source, expr_t *rule, size_t start, parse_t *parent) {
+parse_result_t *parse_dispatch(char *source, expr_t *rule, size_t start, parse_result_t *parent) {
   if(!rule) {
-    return NULL;
+    return make_error(parse_error_init("No parsing rule specified!"));
+  }
+
+  if(parent && is_error(parent)) {
+    return parent;
   }
 
   switch(rule->type) {
@@ -113,20 +130,18 @@ parse_t *parse_dispatch(char *source, expr_t *rule, size_t start, parse_t *paren
     default:
       fatal_error("Invalid node in grammar");
   }
-
-  return NULL;
 }
 
-parse_t *parse_empty(char *source, size_t start, parse_t *parent) {
-  return parse_init("__empty", start, 0);
+parse_result_t *parse_empty(char *source, size_t start, parse_result_t *parent) {
+  return make_result(parse_init("__empty", start, 0));
 }
 
-parse_t *parse_terminal(char *source, char *symbol, size_t start, parse_t *parent) {
+parse_result_t *parse_terminal(char *source, char *symbol, size_t start, parse_result_t *parent) {
   size_t len = strlen(symbol);
 
   for(size_t i = 0; i < len; i++) {
     if(source[i + start] != symbol[i]) {
-      return NULL;
+      return make_error(parse_error_init("Failed to parse terminal"));
     }
   }
 
@@ -141,133 +156,145 @@ parse_t *parse_terminal(char *source, char *symbol, size_t start, parse_t *paren
 
   parse_t *ret = parse_init(annotated, start, len);
   ret->terminal = true;
-  parse_add_child(parent, ret);
+  
+  if(parent) {
+    parse_add_child(parent->data.result, ret);
+  }
 
   free(annotated);
-  return ret;
+  return make_result(ret);
 }
 
-parse_t *parse_non_terminal(char *source, char *symbol, size_t start, parse_t *parent) {
+parse_result_t *parse_non_terminal(char *source, char *symbol, size_t start, parse_result_t *parent) {
   rule_t *rule = grammar_production(grammar, symbol);
   if(!rule) {
     fatal_error("Invalid grammar - no rule for a non-terminal");
   }
 
   parse_t *this = parse_init(symbol, start, 0);
-  parse_t *result = parse_dispatch(source, rule->production, start, this);
-  if(!result) {
-    return NULL;
+  parse_result_t *result = parse_dispatch(source, rule->production, start, make_result(this));
+  if(is_error(result)) {
+    return result;
   }
 
   this->length = parse_total_length(this);
   
-  parse_add_child(parent, this);
-  return this;
+  if(parent) {
+    parse_add_child(parent->data.result, this);
+  }
+
+  return make_result(this);
 }
 
-parse_t *parse_sequence(char *source, expr_t *left, expr_t *right, size_t start, parse_t *parent) {
+parse_result_t *parse_sequence(char *source, expr_t *left, expr_t *right, size_t start, parse_result_t *parent) {
   if(!left || !right) {
-    return NULL;
+    fatal_error("Can't parse sequence with NULL operands");
   }
 
-  parse_t *left_result = parse_dispatch(source, left, start, parent);
-  if(!left_result) {
-    return NULL;
-  }
-
-  parse_t *right_result = parse_dispatch(source, right, start + left_result->length, parent);
-  if(!right_result) {
-    parse_free(left_result);
-    return NULL;
-  }
-
-  left_result->length += right_result->length;
-  return left_result;
-}
-
-parse_t *parse_choice(char *source, expr_t *left, expr_t *right, size_t start, parse_t *parent) {
-  if(!left || !right) {
-    return NULL;
-  }
-
-  parse_t *left_result = parse_dispatch(source, left, start, parent);
-  if(left_result) {
+  parse_result_t *left_result = parse_dispatch(source, left, start, parent);
+  if(is_error(left_result)) {
     return left_result;
   }
 
-  parse_t *right_result = parse_dispatch(source, right, start, parent);
+  parse_result_t *right_result = parse_dispatch(source, right, start + left_result->data.result->length, parent);
+  if(is_error(right_result)) {
+    parse_result_free(left_result);
+    return right_result;
+  }
+
+  left_result->data.result->length += right_result->data.result->length;
+  return left_result;
+}
+
+parse_result_t *parse_choice(char *source, expr_t *left, expr_t *right, size_t start, parse_result_t *parent) {
+  if(!left || !right) {
+    fatal_error("Can't parse choice with NULL operands");
+  }
+
+  parse_result_t *left_result = parse_dispatch(source, left, start, parent);
+  if(is_success(left_result)) {
+    return left_result;
+  }
+
+  parse_result_free(left_result);
+
+  parse_result_t *right_result = parse_dispatch(source, right, start, parent);
   return right_result;
 }
 
-parse_t *parse_zero_or_more(char *source, expr_t *expr, size_t start, parse_t *parent) {
+parse_result_t *parse_zero_or_more(char *source, expr_t *expr, size_t start, parse_result_t *parent) {
   if(!expr) {
-    return NULL;
+    fatal_error("Can't parse zero-or-more with NULL expression");
   }
 
   size_t offset = start;
-  parse_t *result = NULL;
+  parse_result_t *result = NULL;
 
-  while((result = parse_dispatch(source, expr, offset, parent))) {
-    offset += result->length;
+  while((result = parse_dispatch(source, expr, offset, parent)) && is_success(result)) {
+    offset += result->data.result->length;
   }
 
-  parse_t *ret = result ? result : parse_init("__plus_end", offset, 0);
-  ret->length = offset - start;
+  parse_result_t *ret = is_success(result) ? result : make_result(parse_init("__plus_end", offset, 0));
+  ret->data.result->length = offset - start;
   return ret;
 }
 
-parse_t *parse_one_or_more(char *source, expr_t *expr, size_t start, parse_t *parent) {
+parse_result_t *parse_one_or_more(char *source, expr_t *expr, size_t start, parse_result_t *parent) {
   if(!expr) {
-    return NULL;
+    fatal_error("Can't parse one-or-more with NULL expression");
   }
 
   size_t offset = start;
-  parse_t *result, *prev = NULL;
+  parse_result_t *result, *prev = NULL;
 
-  while((result = parse_dispatch(source, expr, offset, parent))) {
+  while((result = parse_dispatch(source, expr, offset, parent)) && is_success(result)) {
     prev = result;
-    offset += result->length;
+    offset += result->data.result->length;
   }
 
   if(prev) {
-    prev->length = offset - start;
+    prev->data.result->length = offset - start;
+  }
+
+  if(!prev) {
+    return result;
   }
 
   return prev;
 }
 
-parse_t *parse_optional(char *source, expr_t *expr, size_t start, parse_t *parent) {
+parse_result_t *parse_optional(char *source, expr_t *expr, size_t start, parse_result_t *parent) {
   if(!expr) {
-    return NULL;
+    fatal_error("Can't parse optional with NULL expression");
   }
 
-  parse_t *result = parse_dispatch(source, expr, start, parent);
-  return result ? result : parse_init("__optional", start, 0);
+  parse_result_t *result = parse_dispatch(source, expr, start, parent);
+  return is_success(result) ? result : make_result(parse_init("__optional", start, 0));
 }
 
-parse_t *parse_and(char *source, expr_t *expr, size_t start) {
+parse_result_t *parse_and(char *source, expr_t *expr, size_t start) {
   if(!expr) {
-    return NULL;
+    fatal_error("Can't parse logical and with NULL expression");
   }
 
-  parse_t *result = parse_dispatch(source, expr, start, NULL);
+  parse_result_t *result = parse_dispatch(source, expr, start, NULL);
 
-  if(result) {
-    return parse_init("__and", start, 0);
+  if(is_success(result)) {
+    return make_result(parse_init("__and", start, 0));
   }
 
-  return NULL;
+  return result;
 }
 
-parse_t *parse_not(char *source, expr_t *expr, size_t start) {
+parse_result_t *parse_not(char *source, expr_t *expr, size_t start) {
   if(!expr) {
-    return NULL;
+    fatal_error("Can't parse logical not with NULL expression");
   }
 
-  parse_t *result = parse_dispatch(source, expr, start, NULL);
-  if(result) {
-    return NULL;
+  parse_result_t *result = parse_dispatch(source, expr, start, NULL);
+  if(is_success(result)) {
+    return make_error(parse_error_init("Matched expression when not expecting to"));
   }
 
-  return parse_init("__not", start, 0);
+  return make_result(parse_init("__not", start, 0));
 }

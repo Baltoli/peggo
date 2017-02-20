@@ -11,10 +11,13 @@ void zero_or_more_zero(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("asd", grammar);
+  parse_result_t *result = parse("asd", grammar);
   assert_non_null(result);
-  assert_int_equal(result->length, 0);
-  assert_int_equal(result->n_children, 0);
+  assert_true(is_success(result));
+
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->length, 0);
+  assert_int_equal(suc->n_children, 0);
 }
 
 void zero_or_more_one(void **state) {
@@ -28,10 +31,13 @@ void zero_or_more_one(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("0", grammar);
+  parse_result_t *result = parse("0", grammar);
   assert_non_null(result);
-  assert_int_equal(result->length, 1);
-  assert_int_equal(result->n_children, 1);
+  assert_true(is_success(result));
+
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->length, 1);
+  assert_int_equal(suc->n_children, 1);
 }
 
 void zero_or_more_many(void **state) {
@@ -45,8 +51,11 @@ void zero_or_more_many(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("00000", grammar);
+  parse_result_t *result = parse("00000", grammar);
   assert_non_null(result);
-  assert_int_equal(result->length, 5);
-  assert_int_equal(result->n_children, 5);
+  assert_true(is_success(result));
+
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->length, 5);
+  assert_int_equal(suc->n_children, 5);
 }

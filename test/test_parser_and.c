@@ -12,8 +12,9 @@ void and_false(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("help", grammar);
-  assert_null(result);
+  parse_result_t *result = parse("help", grammar);
+  assert_non_null(result);
+  assert_true(is_error(result));
 }
 
 void and_true(void **state) {
@@ -28,11 +29,14 @@ void and_true(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("hello", grammar);
+  parse_result_t *result = parse("hello", grammar);
   assert_non_null(result);
-  assert_int_equal(result->length, 1);
-  assert_int_equal(result->n_children, 1);
+  assert_true(is_success(result));
 
-  assert_int_equal(result->children[0].length, 1);
-  assert_int_equal(result->children[0].n_children, 0);
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->length, 1);
+  assert_int_equal(suc->n_children, 1);
+
+  assert_int_equal(suc->children[0].length, 1);
+  assert_int_equal(suc->children[0].n_children, 0);
 }

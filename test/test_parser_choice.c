@@ -11,14 +11,16 @@ void choice_first(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("hello", grammar);
+  parse_result_t *result = parse("hello", grammar);
   assert_non_null(result);
+  assert_true(is_success(result));
 
-  assert_int_equal(result->n_children, 1);
-  assert_int_equal(result->length, 5);
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->n_children, 1);
+  assert_int_equal(suc->length, 5);
   
-  assert_int_equal(result->children[0].length, 5);
-  assert_int_equal(result->children[0].n_children, 0);
+  assert_int_equal(suc->children[0].length, 5);
+  assert_int_equal(suc->children[0].n_children, 0);
 }
 
 void choice_second(void **state) {
@@ -32,14 +34,16 @@ void choice_second(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("longer", grammar);
+  parse_result_t *result = parse("longer", grammar);
   assert_non_null(result);
+  assert_true(is_success(result));
 
-  assert_int_equal(result->n_children, 1);
-  assert_int_equal(result->length, 6);
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->n_children, 1);
+  assert_int_equal(suc->length, 6);
   
-  assert_int_equal(result->children[0].length, 6);
-  assert_int_equal(result->children[0].n_children, 0);
+  assert_int_equal(suc->children[0].length, 6);
+  assert_int_equal(suc->children[0].n_children, 0);
 }
 
 void choice_longer(void **state) {
@@ -53,14 +57,16 @@ void choice_longer(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("if then else", grammar);
+  parse_result_t *result = parse("if then else", grammar);
   assert_non_null(result);
+  assert_true(is_success(result));
 
-  assert_int_equal(result->n_children, 1);
-  assert_int_equal(result->length, 12);
+  parse_t *suc = result->data.result;
+  assert_int_equal(suc->n_children, 1);
+  assert_int_equal(suc->length, 12);
   
-  assert_int_equal(result->children[0].length, 12);
-  assert_int_equal(result->children[0].n_children, 0);
+  assert_int_equal(suc->children[0].length, 12);
+  assert_int_equal(suc->children[0].n_children, 0);
 }
 
 void choice_failure(void **state) {
@@ -74,6 +80,7 @@ void choice_failure(void **state) {
     ), 1
   );
 
-  parse_t *result = parse("neither", grammar);
-  assert_null(result);
+  parse_result_t *result = parse("neither", grammar);
+  assert_non_null(result);
+  assert_true(is_error(result));
 }
