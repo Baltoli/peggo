@@ -119,6 +119,10 @@ bool is_success(parse_result_t *result);
  * Does not take ownership of \p source or \p grammar. They may both be used
  * freely after a call to \ref parse.
  *
+ * If a parse is successful, the object returned will be a \ref SUCCESS variant
+ * with a \ref parse_t member in its union. Similarly, if the parse fails then
+ * it will be an \ref ERROR variant.
+ *
  * \param source A source text to be parsed
  * \param grammar The grammar with which to parse the source
  */
